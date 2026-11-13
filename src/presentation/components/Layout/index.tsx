@@ -1,11 +1,11 @@
-import { AppShell, Burger, Group, NavLink, ScrollArea } from '@mantine/core'
+import { AppShell, Burger, Group, NavLink, ScrollArea, Tooltip } from '@mantine/core'
 import { useAppShellResize } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import type { LucideIcon } from 'lucide-react'
 import css from './index.module.scss'
 
-const NAVBAR_MIN_WIDTH = 112
+const NAVBAR_MIN_WIDTH = 86
 const NAVBAR_MAX_WIDTH = 300
 const INITIAL_RESIZE_SIZES = { navbar: NAVBAR_MAX_WIDTH }
 
@@ -21,32 +21,60 @@ type LayoutProps = {
 
 export function Layout({ children, navLinks }: LayoutProps) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
-  const [desktopOpened, setDesktopOpened] = useState(true)
   const [expandedWidth, setExpandedWidth] = useState(NAVBAR_MAX_WIDTH)
+  const [currentWidth, setCurrentWidth] = useState(NAVBAR_MAX_WIDTH)
+  const navLinksRef = useRef<HTMLDivElement>(null)
+  const isCollapsed = currentWidth < NAVBAR_MIN_WIDTH + 1
   const resize = useAppShellResize({
     navbar: {
       min: NAVBAR_MIN_WIDTH,
       max: NAVBAR_MAX_WIDTH,
-      collapseThreshold: NAVBAR_MIN_WIDTH + 1,
       label: 'Изменить ширину навигационной панели',
     },
     initialSizes: INITIAL_RESIZE_SIZES,
     onResize: ({ navbar }) => {
-      if (navbar !== undefined && navbar > NAVBAR_MIN_WIDTH + 1) {
-        setExpandedWidth(navbar)
+      if (navbar !== undefined) {
+        setCurrentWidth(navbar)
       }
     },
-    onCollapseChange: (section, collapsed) => {
-      if (section === 'navbar') {
-        setDesktopOpened(!collapsed)
+    onResizeEnd: ({ navbar }) => {
+      if (navbar !== undefined) {
+        setCurrentWidth(navbar)
       }
     },
   })
 
+  useEffect(() => {
+    if (isCollapsed) {
+      return
+    }
+
+    const labels = navLinksRef.current?.querySelectorAll<HTMLElement>(`.${css.navLinkLabel}`)
+    const hasOverflow = Array.from(labels ?? []).some((label) => label.scrollWidth > label.clientWidth)
+
+    if (resize.navbar.active) {
+      if (!hasOverflow) {
+        setExpandedWidth(currentWidth)
+      }
+
+      return
+    }
+
+    if (hasOverflow) {
+      setCurrentWidth(NAVBAR_MIN_WIDTH)
+      resize.navbar.setSize(NAVBAR_MIN_WIDTH)
+      return
+    }
+
+    setExpandedWidth(currentWidth)
+  }, [currentWidth, isCollapsed, navLinks, resize.navbar])
+
   const toggleDesktop = () => {
-    const nextOpened = !desktopOpened
-    setDesktopOpened(nextOpened)
-    resize.navbar.setSize(nextOpened ? expandedWidth : NAVBAR_MIN_WIDTH)
+    const nextOpened = isCollapsed
+    const nextWidth = nextOpened ? expandedWidth : NAVBAR_MIN_WIDTH
+
+    setCurrentWidth(nextWidth)
+    resize.navbar.setSize(nextWidth)
   }
 
   return (
@@ -67,42 +95,58 @@ export function Layout({ children, navLinks }: LayoutProps) {
       <AppShell.Header>
         <Group className={css.headerGroup}>
           <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-          <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
+          <Burger opened={!isCollapsed} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
           The burger icon is always visible
         </Group>
       </AppShell.Header>
+
       <AppShell.Navbar className={css.navbar}>
         <AppShell.Section className={css.navbarSection}>
-          <span className={`${css.navbarText} ${desktopOpened ? '' : css.navbarTextCollapsed}`}>
+          <span className={`${css.navbarText} ${isCollapsed ? css.navbarTextCollapsed : ''}`}>
             Header – should some useful tips
           </span>
         </AppShell.Section>
 
         <AppShell.Section grow component={ScrollArea} className={css.navLinks}>
-          {navLinks.map((navLink, index) => {
-            const Icon = navLink.icon
-            const { label } = navLink
+          <div ref={navLinksRef}>
+            {navLinks.map((navLink, index) => {
+              const Icon = navLink.icon
+              const { label } = navLink
+              const icon = (
+                <span className={css.navLinkIcon}>
+                  <Icon />
+                </span>
+              )
 
-            return (
-              <NavLink
-                href="#"
-                key={index}
-                onClick={(event) => event.preventDefault()}
-                leftSection={<Icon />}
-                label={label}
-                classNames={{
-                  root: css.navLink,
-                  section: css.navLinkSection,
-                  body: css.navLinkBody,
-                  label: desktopOpened ? css.navLinkLabel : css.navLinkLabelCollapsed,
-                }}
-              />
-            )
-          })}
+              return (
+                <NavLink
+                  href="#"
+                  key={index}
+                  onClick={(event) => event.preventDefault()}
+                  leftSection={
+                    isCollapsed ? (
+                      <Tooltip label={label} position="right">
+                        {icon}
+                      </Tooltip>
+                    ) : (
+                      icon
+                    )
+                  }
+                  label={isCollapsed ? null : label}
+                  classNames={{
+                    root: css.navLink,
+                    section: css.navLinkSection,
+                    body: css.navLinkBody,
+                    label: css.navLinkLabel,
+                  }}
+                />
+              )
+            })}
+          </div>
         </AppShell.Section>
 
         <AppShell.Section className={css.navbarSection}>
-          <span className={`${css.navbarText} ${desktopOpened ? '' : css.navbarTextCollapsed}`}>
+          <span className={`${css.navbarText} ${isCollapsed ? css.navbarTextCollapsed : ''}`}>
             Navbar footer – always at the bottom
           </span>
         </AppShell.Section>
