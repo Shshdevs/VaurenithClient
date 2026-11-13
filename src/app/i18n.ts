@@ -8,7 +8,8 @@ import appRu from './locales/ru.json'
 import applicationRu from '@/application/locales/ru.json'
 import infrastructureRu from '@/infrastructure/locales/ru.json'
 import presentationRu from '@/presentation/locales/ru.json'
-import { getLanguageFromPathname, supportedLanguages } from './language'
+import { getInitialLanguage, supportedLanguages } from './language'
+import { isTauri } from '@tauri-apps/api/core'
 
 export const defaultNS = 'presentation'
 
@@ -29,7 +30,7 @@ export const resources = {
 
 void i18n.use(initReactI18next).init({
   resources,
-  lng: getLanguageFromPathname(window.location.pathname),
+  lng: getInitialLanguage(window.location, isTauri()),
   fallbackLng: 'en',
   supportedLngs: supportedLanguages,
   defaultNS,

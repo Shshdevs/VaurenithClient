@@ -2,14 +2,30 @@ import type { ApiClient, ApiEnvelope, ApiRequestOptions } from '@/application/po
 import { ApiError, ApiNetworkError, ApiProtocolError } from './ApiError'
 
 export class FetchApiClient implements ApiClient {
-  private readonly baseUrl: string
+  private readonly baseUrl: string | undefined
+  private readonly allowRelativeBaseUrl: boolean
 
-  constructor(baseUrl: string) {
+  constructor(baseUrl?: string, allowRelativeBaseUrl = true) {
     this.baseUrl = baseUrl
+    this.allowRelativeBaseUrl = allowRelativeBaseUrl
   }
 
   async request<TData>(path: string, options: ApiRequestOptions = {}): Promise<ApiEnvelope<TData>> {
-    const baseUrl = this.baseUrl ? new URL(this.baseUrl, window.location.origin) : new URL('/', window.location.origin)
+    if (this.baseUrl === undefined) {
+      throw new ApiNetworkError(new Error('Backend URL is not configured'))
+    }
+
+    let baseUrl: URL
+
+    try {
+      baseUrl = this.baseUrl
+        ? this.allowRelativeBaseUrl
+          ? new URL(this.baseUrl, window.location.origin)
+          : new URL(this.baseUrl)
+        : new URL('/', window.location.origin)
+    } catch (cause) {
+      throw new ApiNetworkError(cause)
+    }
     const url = new URL(path.replace(/^\//, ''), `${baseUrl.href.replace(/\/?$/, '/')}`)
     const headers = new Headers(options.headers)
 
