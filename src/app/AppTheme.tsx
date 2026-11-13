@@ -198,10 +198,10 @@ const theme: MantineThemeOverride = {
     to: 'lime',
     deg: 38,
   },
-  fontFamily: 'Nunito',
-  fontFamilyMonospace: 'Roboto Mono',
+  fontFamily: "'JetBrains Mono', monospace",
+  fontFamilyMonospace: "'JetBrains Mono', monospace",
   headings: {
-    fontFamily: 'Nunito',
+    fontFamily: "'JetBrains Mono', monospace",
     fontWeight: '600',
     sizes: {
       h1: {
