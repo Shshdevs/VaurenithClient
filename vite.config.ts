@@ -28,7 +28,10 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: {
-      port,
+      port: port ?? 5173,
+      strictPort: Boolean(process.env.TAURI_ENV_PLATFORM),
+      host: process.env.TAURI_ENV_PLATFORM ? '127.0.0.1' : undefined,
+      hmr: process.env.TAURI_ENV_PLATFORM ? { protocol: 'ws', host: '127.0.0.1', port: 5173 } : undefined,
     },
     preview: {
       port,
