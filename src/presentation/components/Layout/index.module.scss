@@ -1,16 +1,11 @@
-$navbar-expanded-width: 300px;
-$navbar-collapsed-width: 112px;
-$navbar-icon-size: 32px;
+@use 'variables' as variables;
+
 $navbar-link-min-height: 56px;
 $navbar-link-padding-block: 12px;
 $navbar-link-padding-inline: 8px;
 $navbar-text-duration: 160ms;
 
 .layout {
-  --layout-navbar-expanded-width: #{$navbar-expanded-width};
-  --layout-navbar-collapsed-width: #{$navbar-collapsed-width};
-  --layout-navbar-icon-size: #{$navbar-icon-size};
-
   min-height: 100vh;
 }
 
@@ -19,7 +14,7 @@ $navbar-text-duration: 160ms;
   padding-inline: var(--mantine-spacing-md);
 }
 
-.navbar {
+.navbar.navbar {
   padding: var(--mantine-spacing-md);
   transition-property: width, transform, top, height;
   transition-duration: var(--app-shell-transition-duration);
@@ -57,8 +52,9 @@ $navbar-text-duration: 160ms;
   flex-shrink: 0;
 
   svg {
-    width: var(--layout-navbar-icon-size);
-    height: var(--layout-navbar-icon-size);
+    width: variables.$medium-icon-size;
+    height: variables.$medium-icon-size;
+    stroke-width: variables.$icon-stroke-width;
   }
 }
 

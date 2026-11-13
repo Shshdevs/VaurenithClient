@@ -16,6 +16,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
+        variables: fileURLToPath(new URL('./src/app/styles/variable.scss', import.meta.url)),
       },
     },
     plugins: [react(), babel({ presets: [reactCompilerPreset()] }), svgr()],
