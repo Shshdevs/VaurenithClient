@@ -2,6 +2,7 @@ import { AppShell, Burger, Group, NavLink, ScrollArea } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import type { ReactNode } from 'react'
 import type { LucideIcon } from 'lucide-react'
+import css from './index.module.scss'
 
 type NavbarLink = {
   icon: LucideIcon
@@ -19,6 +20,7 @@ export function Layout({ children, navLinks }: LayoutProps) {
 
   return (
     <AppShell
+      className={css.layout}
       header={{ height: 60 }}
       transitionDuration={320}
       transitionTimingFunction="cubic-bezier(0.22, 1, 0.36, 1)"
@@ -30,33 +32,20 @@ export function Layout({ children, navLinks }: LayoutProps) {
       padding="md"
     >
       <AppShell.Header>
-        <Group h="100%" px="md">
+        <Group className={css.headerGroup}>
           <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
           <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
           The burger icon is always visible
         </Group>
       </AppShell.Header>
-      <AppShell.Navbar
-        p="md"
-        style={{
-          transitionProperty: 'width, transform, top, height',
-          transitionDuration: 'var(--app-shell-transition-duration)',
-          transitionTimingFunction: 'var(--app-shell-transition-timing-function)',
-        }}
-      >
-        <AppShell.Section p="lg">
-          <span
-            style={{
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              visibility: desktopOpened ? 'visible' : 'hidden',
-            }}
-          >
+      <AppShell.Navbar className={css.navbar}>
+        <AppShell.Section className={css.navbarSection}>
+          <span className={`${css.navbarText} ${desktopOpened ? '' : css.navbarTextCollapsed}`}>
             Header – should some useful tips
           </span>
         </AppShell.Section>
 
-        <AppShell.Section grow my="lg" component={ScrollArea} px="sm" style={{ padding: 5 }}>
+        <AppShell.Section grow component={ScrollArea} className={css.navLinks}>
           {navLinks.map((navLink, index) => {
             const Icon = navLink.icon
             const { label } = navLink
@@ -66,36 +55,21 @@ export function Layout({ children, navLinks }: LayoutProps) {
                 href="#"
                 key={index}
                 onClick={(event) => event.preventDefault()}
-                leftSection={<Icon size={32} strokeWidth={1.5} />}
+                leftSection={<Icon />}
                 label={label}
-                styles={{
-                  root: {
-                    width: '100%',
-                    minHeight: 56,
-                    paddingBlock: 12,
-                    paddingInline: 8,
-                  },
-                  section: { flexShrink: 0 },
-                  body: { minWidth: 0, overflow: 'hidden' },
-                  label: {
-                    whiteSpace: 'nowrap',
-                    opacity: desktopOpened ? 1 : 0,
-                    transition: 'opacity 160ms ease',
-                  },
+                classNames={{
+                  root: css.navLink,
+                  section: css.navLinkSection,
+                  body: css.navLinkBody,
+                  label: desktopOpened ? css.navLinkLabel : css.navLinkLabelCollapsed,
                 }}
               />
             )
           })}
         </AppShell.Section>
 
-        <AppShell.Section p="lg">
-          <span
-            style={{
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              visibility: desktopOpened ? 'visible' : 'hidden',
-            }}
-          >
+        <AppShell.Section className={css.navbarSection}>
+          <span className={`${css.navbarText} ${desktopOpened ? '' : css.navbarTextCollapsed}`}>
             Navbar footer – always at the bottom
           </span>
         </AppShell.Section>
