@@ -1,0 +1,78 @@
+$navbar-expanded-width: 300px;
+$navbar-collapsed-width: 112px;
+$navbar-icon-size: 32px;
+$navbar-link-min-height: 56px;
+$navbar-link-padding-block: 12px;
+$navbar-link-padding-inline: 8px;
+$navbar-text-duration: 160ms;
+
+.layout {
+  --layout-navbar-expanded-width: #{$navbar-expanded-width};
+  --layout-navbar-collapsed-width: #{$navbar-collapsed-width};
+  --layout-navbar-icon-size: #{$navbar-icon-size};
+
+  min-height: 100vh;
+}
+
+.headerGroup {
+  height: 100%;
+  padding-inline: var(--mantine-spacing-md);
+}
+
+.navbar {
+  padding: var(--mantine-spacing-md);
+  transition-property: width, transform, top, height;
+  transition-duration: var(--app-shell-transition-duration);
+  transition-timing-function: var(--app-shell-transition-timing-function);
+}
+
+.navbarSection {
+  padding: var(--mantine-spacing-lg);
+}
+
+.navbarText {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.navbarTextCollapsed {
+  visibility: hidden;
+}
+
+.navLinks {
+  margin-block: var(--mantine-spacing-lg);
+  padding: 5px;
+  padding-inline: var(--mantine-spacing-sm);
+}
+
+.navLink {
+  width: 100%;
+  min-height: $navbar-link-min-height;
+  padding-block: $navbar-link-padding-block;
+  padding-inline: $navbar-link-padding-inline;
+}
+
+.navLinkSection {
+  flex-shrink: 0;
+
+  svg {
+    width: var(--layout-navbar-icon-size);
+    height: var(--layout-navbar-icon-size);
+  }
+}
+
+.navLinkBody {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.navLinkLabel {
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity $navbar-text-duration ease;
+}
+
+.navLinkLabelCollapsed {
+  opacity: 0;
+}
