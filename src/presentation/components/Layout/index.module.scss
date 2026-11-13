@@ -15,14 +15,18 @@ $navbar-text-duration: 160ms;
 }
 
 .navbar.navbar {
-  padding: var(--mantine-spacing-md);
+  padding: var(--mantine-spacing-md) var(--mantine-spacing-sm);
   transition-property: width, transform, top, height;
   transition-duration: var(--app-shell-transition-duration);
   transition-timing-function: var(--app-shell-transition-timing-function);
 }
 
+.resizeHandle.resizeHandle {
+  width: 12px;
+}
+
 .navbarSection {
-  padding: var(--mantine-spacing-lg);
+  padding: var(--mantine-spacing-md);
 }
 
 .navbarText {
@@ -37,15 +41,14 @@ $navbar-text-duration: 160ms;
 
 .navLinks {
   margin-block: var(--mantine-spacing-lg);
-  padding: 5px;
-  padding-inline: var(--mantine-spacing-sm);
+  padding: 5px 0;
 }
 
 .navLink {
   width: 100%;
   min-height: $navbar-link-min-height;
   padding-block: $navbar-link-padding-block;
-  padding-inline: $navbar-link-padding-inline;
+  padding-inline: 4px;
 }
 
 .navLinkSection {
