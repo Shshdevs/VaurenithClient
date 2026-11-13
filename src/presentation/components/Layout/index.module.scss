@@ -26,13 +26,20 @@ $navbar-text-duration: 160ms;
 }
 
 .navbarSection {
+  height: 88px;
+  flex: 0 0 88px;
+  overflow: hidden;
   padding: var(--mantine-spacing-md);
 }
 
 .navbarText {
-  display: block;
+  display: -webkit-box;
   overflow: hidden;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
 }
 
 .navbarTextCollapsed {
@@ -61,17 +68,24 @@ $navbar-text-duration: 160ms;
   }
 }
 
+.navLinkIcon {
+  display: flex;
+  width: variables.$medium-icon-size;
+  height: variables.$medium-icon-size;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
 .navLinkBody {
   min-width: 0;
   overflow: hidden;
 }
 
 .navLinkLabel {
+  display: block;
+  overflow: hidden;
   white-space: nowrap;
   opacity: 1;
   transition: opacity $navbar-text-duration ease;
-}
-
-.navLinkLabelCollapsed {
-  opacity: 0;
 }
