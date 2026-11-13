@@ -92,7 +92,7 @@ export function Layout({ children, navLinks }: LayoutProps) {
       }}
       padding="md"
       resize={resize}
-      classNames={{ resizeHandle: css.resizeHandle }}
+      classNames={{ header: css.header, resizeHandle: css.resizeHandle }}
     >
       <AppShell.Header>
         <Group className={css.headerGroup}>

@@ -264,13 +264,13 @@ const theme: MantineThemeOverride = {
   components: {
     Card: {
       defaultProps: {
-        bg: 'var(--mantine-color-goo-5)',
+        bg: 'var(--mantine-color-body)',
       },
       styles: {},
     },
     Paper: {
       defaultProps: {
-        bg: 'var(--mantine-color-goo-6)',
+        bg: 'var(--mantine-color-body)',
         shadow: 'md',
       },
       styles: {},
