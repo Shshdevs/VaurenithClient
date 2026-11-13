@@ -1,14 +1,18 @@
 import { Layout } from '@/presentation/components/Layout'
 import { Home, LayoutDashboard } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+
 export function HomePage() {
+  const { t } = useTranslation('presentation')
+
   return (
     <Layout
       navLinks={[
-        { icon: Home, label: 'Главная' },
-        { icon: LayoutDashboard, label: 'Проекты' },
+        { icon: Home, labelKey: 'navigation.home' },
+        { icon: LayoutDashboard, labelKey: 'navigation.projects' },
       ]}
     >
-      <div>Main</div>
+      <div>{t('home.title')}</div>
     </Layout>
   )
 }

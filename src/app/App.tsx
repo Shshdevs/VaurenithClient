@@ -1,4 +1,5 @@
 import { BrowserRouter } from 'react-router-dom'
+import { LanguageSync } from './LanguageSync'
 import { FetchApiClient } from '@/infrastructure/api/FetchApiClient'
 import { ApiClientProvider } from '@/presentation/app/ApiClientProvider'
 import { AppRouter } from '@/presentation/app/AppRouter'
@@ -14,6 +15,7 @@ export function App() {
       {
         <ApiClientProvider apiClient={apiClient}>
           <BrowserRouter>
+            <LanguageSync />
             <AppRouter />
           </BrowserRouter>
         </ApiClientProvider>
