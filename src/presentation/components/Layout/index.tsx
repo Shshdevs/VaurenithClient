@@ -2,6 +2,7 @@ import { AppShell, Burger, Group, NavLink, ScrollArea, Tooltip } from '@mantine/
 import { useAppShellResize } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { LucideIcon } from 'lucide-react'
 import css from './index.module.scss'
 
@@ -11,7 +12,7 @@ const INITIAL_RESIZE_SIZES = { navbar: NAVBAR_MAX_WIDTH }
 
 type NavbarLink = {
   icon: LucideIcon
-  label: string
+  labelKey: 'navigation.home' | 'navigation.projects'
 }
 
 type LayoutProps = {
@@ -20,6 +21,7 @@ type LayoutProps = {
 }
 
 export function Layout({ children, navLinks }: LayoutProps) {
+  const { t } = useTranslation('presentation')
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
   const [expandedWidth, setExpandedWidth] = useState(NAVBAR_MAX_WIDTH)
   const [currentWidth, setCurrentWidth] = useState(NAVBAR_MAX_WIDTH)
@@ -29,7 +31,7 @@ export function Layout({ children, navLinks }: LayoutProps) {
     navbar: {
       min: NAVBAR_MIN_WIDTH,
       max: NAVBAR_MAX_WIDTH,
-      label: 'Изменить ширину навигационной панели',
+      label: t('layout.resizeNavbar'),
     },
     initialSizes: INITIAL_RESIZE_SIZES,
     onResize: ({ navbar }) => {
@@ -96,22 +98,22 @@ export function Layout({ children, navLinks }: LayoutProps) {
         <Group className={css.headerGroup}>
           <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
           <Burger opened={!isCollapsed} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
-          The burger icon is always visible
+          <span>{t('layout.burgerLabel')}</span>
         </Group>
       </AppShell.Header>
 
       <AppShell.Navbar className={css.navbar}>
         <AppShell.Section className={css.navbarSection}>
           <span className={`${css.navbarText} ${isCollapsed ? css.navbarTextCollapsed : ''}`}>
-            Header – should some useful tips
+            {t('layout.header')}
           </span>
         </AppShell.Section>
 
         <AppShell.Section grow component={ScrollArea} className={css.navLinks}>
           <div ref={navLinksRef}>
-            {navLinks.map((navLink, index) => {
+            {navLinks.map((navLink) => {
               const Icon = navLink.icon
-              const { label } = navLink
+              const label = t(navLink.labelKey)
               const icon = (
                 <span className={css.navLinkIcon}>
                   <Icon />
@@ -121,7 +123,7 @@ export function Layout({ children, navLinks }: LayoutProps) {
               return (
                 <NavLink
                   href="#"
-                  key={index}
+                  key={navLink.labelKey}
                   onClick={(event) => event.preventDefault()}
                   leftSection={
                     isCollapsed ? (
@@ -147,7 +149,7 @@ export function Layout({ children, navLinks }: LayoutProps) {
 
         <AppShell.Section className={css.navbarSection}>
           <span className={`${css.navbarText} ${isCollapsed ? css.navbarTextCollapsed : ''}`}>
-            Navbar footer – always at the bottom
+            {t('layout.footer')}
           </span>
         </AppShell.Section>
       </AppShell.Navbar>

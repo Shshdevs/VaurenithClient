@@ -1,0 +1,19 @@
+{
+  "layout": {
+    "header": "Useful tips",
+    "footer": "Always at the bottom",
+    "burgerLabel": "The burger icon is always visible",
+    "resizeNavbar": "Resize navigation panel"
+  },
+  "navigation": {
+    "home": "Home",
+    "projects": "Projects"
+  },
+  "home": {
+    "title": "Main"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "backToHome": "Back to main"
+  }
+}
