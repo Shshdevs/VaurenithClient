@@ -23,7 +23,7 @@ export function Layout({ children, navLinks }: LayoutProps) {
       transitionDuration={320}
       transitionTimingFunction="cubic-bezier(0.22, 1, 0.36, 1)"
       navbar={{
-        width: desktopOpened ? 300 : 88,
+        width: desktopOpened ? 300 : 112,
         breakpoint: 'sm',
         collapsed: { mobile: !mobileOpened },
       }}
@@ -66,7 +66,7 @@ export function Layout({ children, navLinks }: LayoutProps) {
                 href="#"
                 key={index}
                 onClick={(event) => event.preventDefault()}
-                leftSection={<Icon size={32} />}
+                leftSection={<Icon size={32} strokeWidth={1.5} />}
                 label={label}
                 styles={{
                   root: {
@@ -74,8 +74,9 @@ export function Layout({ children, navLinks }: LayoutProps) {
                     minHeight: 56,
                     paddingBlock: 12,
                     paddingInline: 8,
-                    overflow: 'hidden',
                   },
+                  section: { flexShrink: 0 },
+                  body: { minWidth: 0, overflow: 'hidden' },
                   label: {
                     whiteSpace: 'nowrap',
                     opacity: desktopOpened ? 1 : 0,
