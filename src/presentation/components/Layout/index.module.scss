@@ -14,7 +14,15 @@ $navbar-text-duration: 160ms;
   padding-inline: var(--mantine-spacing-md);
 }
 
+.header {
+  background-color: var(--mantine-color-body);
+  border-color: var(--mantine-color-default-border);
+  color: var(--mantine-color-text);
+}
+
 .navbar.navbar {
+  background-color: var(--mantine-color-body);
+  border-color: var(--mantine-color-default-border);
   padding: var(--mantine-spacing-md) var(--mantine-spacing-sm);
   transition-property: width, transform, top, height;
   transition-duration: var(--app-shell-transition-duration);
@@ -56,6 +64,17 @@ $navbar-text-duration: 160ms;
   min-height: $navbar-link-min-height;
   padding-block: $navbar-link-padding-block;
   padding-inline: 4px;
+  border-radius: 12px;
+
+  &.navLink:hover,
+  &.navLink[data-active] {
+    background-color: var(--mantine-primary-color-light);
+    color: var(--mantine-primary-color-light-color);
+  }
+
+  &.navLink:hover {
+    background-color: var(--mantine-primary-color-light-hover);
+  }
 }
 
 .navLinkSection {

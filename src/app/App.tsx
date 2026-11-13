@@ -26,7 +26,7 @@ function AppRouterProvider() {
 
 export function App() {
   return (
-    <MantineProvider theme={theme}>
+    <MantineProvider theme={theme} defaultColorScheme="auto">
       <ApiClientProvider apiClient={apiClient}>
         <AppRouterProvider />
       </ApiClientProvider>
