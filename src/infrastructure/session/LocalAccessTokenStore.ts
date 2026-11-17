@@ -1,4 +1,4 @@
-import type { AccessTokenStore } from '@/application/ports/AccessTokenStore'
+import type { AccessTokenStore } from '@/application/ports/session/AccessTokenStore'
 
 const ACCESS_TOKEN_KEY = 'vaurenith.access_token'
 

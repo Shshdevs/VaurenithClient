@@ -1,9 +1,10 @@
 import { Alert, Button, Container, Paper, Stack, Title } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
-import type { PlatformType, UserCreateRequest } from '@/application/ports/IdentityApi'
-import { useIdentityApi } from '@/presentation/app/useIdentityApi'
-import { useIdentityAuth } from '@/presentation/app/useIdentityAuth'
+import type { UserCreateRequest } from '@/application/ports/identity/IdentityApi'
+import type { ClientPlatform } from '@/domain/identity/ClientDevice'
+import { useIdentityApi } from '@/presentation/app/identity/useIdentityApi'
+import { useIdentityAuth } from '@/presentation/app/identity/useIdentityAuth'
 import { usePlatform } from '@/presentation/app/usePlatform'
 import css from './index.module.scss'
 
@@ -36,8 +37,8 @@ export function CreateUserPage() {
           const platformType = getPlatformType(clientInfo.operatingSystem)
           const request: UserCreateRequest = {
             email: authorization.email,
-            display_name: authorization.displayName,
-            device_name: createDeviceName(platformType),
+            displayName: authorization.displayName,
+            deviceName: createDeviceName(platformType),
             platform: platformType,
           }
           const response = await identityApi.createUser(token, request)
@@ -59,8 +60,8 @@ export function CreateUserPage() {
             if (!isApiStatus(cause, 404) || !authorization.displayName) throw cause
             const response = await identityApi.createUser(token, {
               email: authorization.email,
-              display_name: authorization.displayName,
-              device_name: device.name,
+              displayName: authorization.displayName,
+              deviceName: device.name,
               platform: device.platform,
             })
             nickname = response.data?.nickname
@@ -121,7 +122,7 @@ export function CreateUserPage() {
   )
 }
 
-function getPlatformType(operatingSystem: string): PlatformType {
+function getPlatformType(operatingSystem: string): ClientPlatform {
   switch (operatingSystem.toLowerCase()) {
     case 'macos':
     case 'darwin':
@@ -143,8 +144,8 @@ function getPlatformType(operatingSystem: string): PlatformType {
   }
 }
 
-function createDeviceName(platform: PlatformType): string {
-  const names: Record<PlatformType, string> = {
+function createDeviceName(platform: ClientPlatform): string {
+  const names: Record<ClientPlatform, string> = {
     macos: 'macOS',
     windows: 'Windows',
     linux: 'Linux',

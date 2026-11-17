@@ -1,5 +1,5 @@
-import type { AccessTokenStore } from '@/application/ports/AccessTokenStore'
-import type { IdentityAuth } from '@/application/ports/IdentityAuth'
+import type { AccessTokenStore } from '@/application/ports/session/AccessTokenStore'
+import type { IdentityAuth } from '@/application/ports/identity/IdentityAuth'
 
 type OidcConfiguration = {
   authorization_endpoint: string

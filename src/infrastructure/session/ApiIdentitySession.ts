@@ -1,7 +1,7 @@
-import type { IdentitySession } from '@/application/ports/IdentitySession'
+import type { IdentitySession } from '@/application/ports/session/IdentitySession'
 import type { ApiClient } from '@/application/ports/ApiClient'
 import { ApiError } from '@/infrastructure/api/ApiError'
-import type { AccessTokenStore } from '@/application/ports/AccessTokenStore'
+import type { AccessTokenStore } from '@/application/ports/session/AccessTokenStore'
 
 export class ApiIdentitySession implements IdentitySession {
   private readonly apiClient: ApiClient

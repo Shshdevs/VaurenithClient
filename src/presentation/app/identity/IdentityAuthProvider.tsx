@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { IdentityAuth } from '@/application/ports/IdentityAuth'
+import type { IdentityAuth } from '@/application/ports/identity/IdentityAuth'
 import { IdentityAuthContext } from './IdentityAuthContext'
 
 export function IdentityAuthProvider({ identityAuth, children }: { identityAuth: IdentityAuth; children: ReactNode }) {

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { IdentitySession } from '@/application/ports/IdentitySession'
+import type { IdentitySession } from '@/application/ports/session/IdentitySession'
 import { IdentitySessionContext } from './IdentitySessionContext'
 
 type IdentitySessionProviderProps = {
