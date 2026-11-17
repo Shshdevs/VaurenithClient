@@ -198,10 +198,11 @@ const theme: MantineThemeOverride = {
     to: 'lime',
     deg: 38,
   },
-  fontFamily: "'JetBrains Mono', monospace",
-  fontFamilyMonospace: "'JetBrains Mono', monospace",
+  fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+  fontFamilyMonospace:
+    'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
   headings: {
-    fontFamily: "'JetBrains Mono', monospace",
+    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     fontWeight: '600',
     sizes: {
       h1: {
