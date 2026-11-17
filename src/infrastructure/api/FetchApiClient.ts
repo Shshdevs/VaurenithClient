@@ -52,7 +52,7 @@ export class FetchApiClient implements ApiClient {
 
     if (!response.ok) {
       const errorBody = isRecord(body) ? body : null
-      const message = typeof errorBody?.message === 'string' ? errorBody.message : response.statusText || 'HTTP error'
+      const message = getErrorMessage(errorBody, response.statusText)
       const status =
         typeof errorBody?.status === 'string' ? errorBody.status : `${response.status} ${response.statusText}`
 
@@ -65,6 +65,16 @@ export class FetchApiClient implements ApiClient {
 
     return body
   }
+}
+
+function getErrorMessage(errorBody: Record<string, unknown> | null, statusText: string): string {
+  if (typeof errorBody?.message === 'string') return errorBody.message
+  if (typeof errorBody?.details === 'string') return errorBody.details
+  if (isRecord(errorBody?.details)) {
+    if (typeof errorBody.details.message === 'string') return errorBody.details.message
+    if (typeof errorBody.details.detail === 'string') return errorBody.details.detail
+  }
+  return statusText || 'HTTP error'
 }
 
 function parseResponseBody(body: string, statusCode: number, requestId: string | null): unknown {
@@ -84,10 +94,5 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 function isApiEnvelope<TData>(value: unknown): value is ApiEnvelope<TData> {
-  return (
-    isRecord(value) &&
-    typeof value.status === 'string' &&
-    (typeof value.message === 'string' || value.message === null) &&
-    'data' in value
-  )
+  return isRecord(value) && typeof value.status === 'string' && typeof value.code === 'string' && 'entity_type' in value
 }

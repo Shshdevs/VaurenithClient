@@ -7,8 +7,10 @@ export type ApiRequestOptions = {
 
 export type ApiEnvelope<TData> = {
   status: string
-  message: string | null
-  data: TData | null
+  code: string
+  entity_type: string | null
+  data?: TData | null
+  details?: unknown | null
 }
 
 export interface ApiClient {
