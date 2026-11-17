@@ -11,7 +11,7 @@ import css from './index.module.scss'
 
 const NICKNAME_KEY = 'vaurenith.nickname'
 
-export function CreateUserPage() {
+export function AuthPage() {
   const { t } = useTranslation('presentation')
   const platform = usePlatform()
   const identityApi = useIdentityApi()
