@@ -1,0 +1,70 @@
+.logo {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+}
+
+.icon {
+  display: block;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.header {
+  width: auto;
+  max-width: min(260px, calc(100vw - 112px));
+  flex: 0 1 auto;
+}
+
+.header .icon {
+  width: 40px;
+  height: 40px;
+}
+
+.header .name {
+  font-size: 1.2rem;
+}
+
+.header .combined {
+  width: min(100%, 220px);
+  max-height: 52px;
+}
+
+.name {
+  overflow: hidden;
+  color: var(--mantine-color-text);
+  font-size: var(--mantine-font-size-lg);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.combined {
+  display: none;
+  width: min(100%, 220px);
+  max-height: 60px;
+  margin-inline: auto;
+  object-fit: contain;
+}
+
+.compact {
+  justify-content: center;
+}
+
+.dark:not(.compact) .icon,
+.dark:not(.compact) .name {
+  display: none;
+}
+
+.dark:not(.compact) .combined {
+  display: block;
+}
+
+.dark.compact .icon {
+  filter: drop-shadow(0 0 2px var(--mantine-color-white));
+}

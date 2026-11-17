@@ -4,6 +4,7 @@ import { useDisclosure } from '@mantine/hooks'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { LucideIcon } from 'lucide-react'
+import { BrandLogo } from '@/presentation/components/BrandLogo'
 import css from './index.module.scss'
 
 const NAVBAR_MIN_WIDTH = 86
@@ -96,9 +97,21 @@ export function Layout({ children, navLinks }: LayoutProps) {
     >
       <AppShell.Header>
         <Group className={css.headerGroup}>
-          <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-          <Burger opened={!isCollapsed} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
-          <span>{t('layout.burgerLabel')}</span>
+          <Burger
+            opened={mobileOpened}
+            onClick={toggleMobile}
+            hiddenFrom="sm"
+            size="sm"
+            aria-label={t('layout.burgerLabel')}
+          />
+          <Burger
+            opened={!isCollapsed}
+            onClick={toggleDesktop}
+            visibleFrom="sm"
+            size="sm"
+            aria-label={t('layout.burgerLabel')}
+          />
+          <BrandLogo header />
         </Group>
       </AppShell.Header>
 

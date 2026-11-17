@@ -9,6 +9,11 @@
   width: 100%;
 }
 
+.brandLogo {
+  max-width: 240px;
+  margin: 0 auto var(--mantine-spacing-lg);
+}
+
 .title {
   margin-bottom: var(--mantine-spacing-xl);
   text-align: center;
