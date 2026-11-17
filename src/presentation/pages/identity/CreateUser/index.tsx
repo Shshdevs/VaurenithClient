@@ -6,6 +6,7 @@ import type { ClientPlatform } from '@/domain/identity/ClientDevice'
 import { useIdentityApi } from '@/presentation/app/identity/useIdentityApi'
 import { useIdentityAuth } from '@/presentation/app/identity/useIdentityAuth'
 import { usePlatform } from '@/presentation/app/usePlatform'
+import { BrandLogo } from '@/presentation/components/BrandLogo'
 import css from './index.module.scss'
 
 const NICKNAME_KEY = 'vaurenith.nickname'
@@ -104,6 +105,7 @@ export function CreateUserPage() {
     <main className={css.page}>
       <Container size={440}>
         <Paper className={css.card} withBorder p="xl" radius="lg">
+          <BrandLogo className={css.brandLogo} />
           <Title order={1} className={css.title}>
             {t('registration.title')}
           </Title>
