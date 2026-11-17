@@ -1,7 +1,7 @@
 export type ClientInfo = {
   appName: string
   appVersion: string
-  environment: 'desktop'
+  environment: 'web' | 'desktop'
   operatingSystem: string
 }
 

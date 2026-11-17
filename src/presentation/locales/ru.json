@@ -10,7 +10,20 @@
     "projects": "Проекты"
   },
   "home": {
-    "title": "Главная"
+    "title": "Главная",
+    "welcome": "Добро пожаловать, {{nickname}}"
+  },
+  "registration": {
+    "title": "Добро пожаловать",
+    "createAccount": "Создать аккаунт",
+    "signIn": "Войти в аккаунт",
+    "oidcError": "Не удалось завершить авторизацию через Keycloak. Повторите попытку.",
+    "oidcErrorDetails": "Не удалось завершить авторизацию через Keycloak: {{reason}}"
+  },
+  "identity": {
+    "sessionCheckError": "Не удалось проверить сессию",
+    "sessionCheckErrorDescription": "Проверьте подключение к серверу и повторите попытку.",
+    "retry": "Повторить"
   },
   "notFound": {
     "title": "Страница не найдена",
