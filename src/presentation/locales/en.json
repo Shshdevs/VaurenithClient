@@ -10,7 +10,20 @@
     "projects": "Projects"
   },
   "home": {
-    "title": "Main"
+    "title": "Main",
+    "welcome": "Welcome, {{nickname}}"
+  },
+  "registration": {
+    "title": "Welcome",
+    "createAccount": "Create an account",
+    "signIn": "Sign in",
+    "oidcError": "Keycloak sign-in could not be completed. Please try again.",
+    "oidcErrorDetails": "Keycloak sign-in could not be completed: {{reason}}"
+  },
+  "identity": {
+    "sessionCheckError": "Unable to check the session",
+    "sessionCheckErrorDescription": "Check your connection to the server and try again.",
+    "retry": "Retry"
   },
   "notFound": {
     "title": "Page not found",

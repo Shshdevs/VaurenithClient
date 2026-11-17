@@ -22,7 +22,7 @@
    cp .env.example .env
    ```
 
-   `PORT` задаёт порт dev-сервера и preview; если он не указан, используется порт Vite. `VITE_API_BASE_URL` задаёт базовый URL Backend API; пустое значение направляет запросы на тот же origin. Не помещай секреты в `VITE_*`: эти значения попадают в клиентскую сборку.
+   `PORT` задаёт порт dev-сервера и preview; если он не указан, используется порт Vite. `VITE_API_BASE_URL` задаёт базовый URL Backend API; пустое значение направляет запросы на тот же origin. `VITE_OIDC_AUTHORITY` указывает URL realm Keycloak, `VITE_OIDC_CLIENT_ID` задаёт публичный OIDC client, а `VITE_OIDC_REDIRECT_URI` — зарегистрированный redirect URI. Для Web-клиента по умолчанию используется `http://localhost:5173/auth/callback`. В Keycloak включи Standard Flow, PKCE S256, scope `email`, точный redirect URI и Web Origin клиента. Не помещай секреты в `VITE_*`: эти значения попадают в клиентскую сборку.
 
 3. Запусти dev-сервер:
 
@@ -46,3 +46,15 @@
 Архитектурные слои, правила импортов и границы интеграции с Backend описаны в [документации по архитектуре](docs/architecture.md).
 
 Запуск Desktop, требования платформ и правила IPC описаны в [руководстве по Desktop](docs/desktop.md).
+
+## Проверка потока аутентификации
+
+`pnpm test:e2e` запускает браузерные сценарии регистрации и повторного входа с изолированными OIDC и Backend ответами. Реальные Keycloak и Backend для этих сценариев не требуются. При падении Playwright сохраняет трассировку в `test-results`.
+
+Для успешной проверки реального локального потока нужны запущенные Client, Keycloak и Backend, а также существующий пользователь с подтверждённой почтой и Backend-профилем. Если создание профиля не сработало, live-сценарий всё равно выведет статусы API и безопасную проверку обязательных JWT claims без печати токена или самих значений claims:
+
+```sh
+OIDC_E2E_USERNAME='test-user' OIDC_E2E_PASSWORD='test-password' pnpm test:e2e:live
+```
+
+Live-сценарий использует конфигурацию Client из `.env`, выполняет вход через Keycloak и печатает последовательность статусов Backend API при сбое.
