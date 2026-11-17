@@ -6,7 +6,7 @@ import { Navigate, Route, Routes, useLocation, useParams } from 'react-router-do
 import { HomePage } from '@/presentation/pages/HomePage'
 import { NotFoundPage } from '@/presentation/pages/NotFoundPage'
 import { CreateUserPage } from '@/presentation/pages/identity/CreateUser'
-import { useIdentitySession } from './useIdentitySession'
+import { useIdentitySession } from './session/useIdentitySession'
 
 type SessionState = 'checking' | 'active' | 'inactive' | 'error'
 

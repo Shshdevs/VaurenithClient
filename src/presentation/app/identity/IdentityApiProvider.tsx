@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { IdentityApi } from '@/application/ports/IdentityApi'
+import type { IdentityApi } from '@/application/ports/identity/IdentityApi'
 import { IdentityApiContext } from './IdentityApiContext'
 
 export function IdentityApiProvider({ identityApi, children }: { identityApi: IdentityApi; children: ReactNode }) {
