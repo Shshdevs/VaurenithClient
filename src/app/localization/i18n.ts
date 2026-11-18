@@ -8,7 +8,7 @@ import appRu from './locales/ru.json'
 import applicationRu from '@/application/locales/ru.json'
 import infrastructureRu from '@/infrastructure/locales/ru.json'
 import presentationRu from '@/presentation/locales/ru.json'
-import { getInitialLanguage, supportedLanguages } from './language'
+import { getInitialLanguage, supportedLanguages } from '@/app/localization/language'
 import { isTauri } from '@tauri-apps/api/core'
 
 export const defaultNS = 'presentation'

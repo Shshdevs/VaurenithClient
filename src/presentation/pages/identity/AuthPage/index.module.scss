@@ -57,10 +57,10 @@
 }
 
 .actionButton {
-  font-size: 0.6rem;
+  font-size: 1rem;
 
   --button-radius: var(--mantine-radius-md);
-  --button-height: 88px;
+  --button-height: 56px;
 }
 
 @media (width <= 48em) {
@@ -99,9 +99,9 @@
   }
 
   .actionButton {
-    font-size: 0.9rem !important;
+    font-size: 1rem !important;
 
-    --button-height: 72px;
+    --button-height: 56px;
   }
 }
 
@@ -119,8 +119,8 @@
   }
 
   .actionButton {
-    font-size: 0.8rem !important;
+    font-size: 0.9rem !important;
 
-    --button-height: 64px;
+    --button-height: 52px;
   }
 }
