@@ -1,9 +1,10 @@
-import { AppShell, Burger, Group, NavLink, ScrollArea, Tooltip } from '@mantine/core'
+import { AppShell, Burger, Group, NavLink, ScrollArea, Tooltip, Title } from '@mantine/core'
 import { useAppShellResize } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { LucideIcon } from 'lucide-react'
+import { Outlet } from 'react-router-dom'
 import { BrandLogo } from '@/presentation/components/BrandLogo'
 import css from './index.module.scss'
 
@@ -13,15 +14,19 @@ const INITIAL_RESIZE_SIZES = { navbar: NAVBAR_MAX_WIDTH }
 
 type NavbarLink = {
   icon: LucideIcon
-  labelKey: 'navigation.home' | 'navigation.projects'
+  labelKey: string
+}
+
+type NavbarSection = {
+  title: string
+  navLinks: readonly NavbarLink[]
 }
 
 type LayoutProps = {
-  children: ReactNode
-  navLinks: NavbarLink[]
+  navSections: readonly NavbarSection[]
 }
 
-export function Layout({ children, navLinks }: LayoutProps) {
+export function Layout({ navSections }: LayoutProps) {
   const { t } = useTranslation('presentation')
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
   const [expandedWidth, setExpandedWidth] = useState(NAVBAR_MAX_WIDTH)
@@ -70,7 +75,7 @@ export function Layout({ children, navLinks }: LayoutProps) {
     }
 
     setExpandedWidth(currentWidth)
-  }, [currentWidth, isCollapsed, navLinks, resize.navbar])
+  }, [currentWidth, isCollapsed, navSections, resize.navbar])
 
   const toggleDesktop = () => {
     const nextOpened = isCollapsed
@@ -98,6 +103,7 @@ export function Layout({ children, navLinks }: LayoutProps) {
       <AppShell.Header>
         <Group className={css.headerGroup}>
           <Burger
+            className={css.burger}
             opened={mobileOpened}
             onClick={toggleMobile}
             hiddenFrom="sm"
@@ -105,6 +111,7 @@ export function Layout({ children, navLinks }: LayoutProps) {
             aria-label={t('layout.burgerLabel')}
           />
           <Burger
+            className={css.burger}
             opened={!isCollapsed}
             onClick={toggleDesktop}
             visibleFrom="sm"
@@ -122,39 +129,54 @@ export function Layout({ children, navLinks }: LayoutProps) {
           </span>
         </AppShell.Section>
 
-        <AppShell.Section grow component={ScrollArea} className={css.navLinks}>
-          <div ref={navLinksRef}>
-            {navLinks.map((navLink) => {
-              const Icon = navLink.icon
-              const label = t(navLink.labelKey)
-              const icon = (
-                <span className={css.navLinkIcon}>
-                  <Icon />
-                </span>
-              )
-
+        <AppShell.Section grow component={ScrollArea} className={css.navBar}>
+          <div ref={navLinksRef} className={css.navLinksRef}>
+            {navSections.map((navSection) => {
               return (
-                <NavLink
-                  href="#"
-                  key={navLink.labelKey}
-                  onClick={(event) => event.preventDefault()}
-                  leftSection={
-                    isCollapsed ? (
-                      <Tooltip label={label} position="right">
-                        {icon}
-                      </Tooltip>
-                    ) : (
-                      icon
+                <div className={css.navSection} key={navSection.title}>
+                  <Title
+                    size="lg"
+                    ml="sm"
+                    className={`${css.navSectionTitle} 
+                    ${isCollapsed ? css.navbarTextCollapsed : ''}`}
+                  >
+                    {t(navSection.title as never)}
+                  </Title>
+
+                  {navSection.navLinks.map((navLink) => {
+                    const Icon = navLink.icon
+                    const label = t(navLink.labelKey as never)
+                    const icon = (
+                      <span className={css.navLinkIcon}>
+                        <Icon />
+                      </span>
                     )
-                  }
-                  label={isCollapsed ? null : label}
-                  classNames={{
-                    root: css.navLink,
-                    section: css.navLinkSection,
-                    body: css.navLinkBody,
-                    label: css.navLinkLabel,
-                  }}
-                />
+
+                    return (
+                      <NavLink
+                        href="#"
+                        key={navLink.labelKey}
+                        onClick={(event) => event.preventDefault()}
+                        leftSection={
+                          isCollapsed ? (
+                            <Tooltip label={label} position="right">
+                              {icon}
+                            </Tooltip>
+                          ) : (
+                            icon
+                          )
+                        }
+                        label={isCollapsed ? null : label}
+                        classNames={{
+                          root: css.navLink,
+                          section: css.navLinkSection,
+                          body: css.navLinkBody,
+                          label: css.navLinkLabel,
+                        }}
+                      />
+                    )
+                  })}
+                </div>
               )
             })}
           </div>
@@ -166,7 +188,9 @@ export function Layout({ children, navLinks }: LayoutProps) {
           </span>
         </AppShell.Section>
       </AppShell.Navbar>
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <Outlet />
+      </AppShell.Main>
     </AppShell>
   )
 }

@@ -12,6 +12,12 @@ $navbar-text-duration: 160ms;
 .headerGroup {
   height: 100%;
   padding-inline: var(--mantine-spacing-md);
+
+  .burger {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 .header {
@@ -37,7 +43,6 @@ $navbar-text-duration: 160ms;
   height: 88px;
   flex: 0 0 88px;
   overflow: hidden;
-  padding: var(--mantine-spacing-md);
 }
 
 .navbarText {
@@ -54,9 +59,15 @@ $navbar-text-duration: 160ms;
   visibility: hidden;
 }
 
-.navLinks {
+.navBar {
   margin-block: var(--mantine-spacing-lg);
   padding: 5px 0;
+
+  .navLinksRef {
+    display: flex;
+    flex-direction: column;
+    gap: var(--mantine-spacing-lg);
+  }
 }
 
 .navLink {
@@ -74,6 +85,7 @@ $navbar-text-duration: 160ms;
 
   &.navLink:hover {
     background-color: var(--mantine-primary-color-light-hover);
+    cursor: pointer;
   }
 }
 

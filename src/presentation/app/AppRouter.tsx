@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom'
+import { Layout } from '@/presentation/components/Layout'
+import { APP_NAV_SECTIONS } from './consts'
 import { HomePage } from '@/presentation/pages/HomePage'
 import { NotFoundPage } from '@/presentation/pages/NotFoundPage'
 import { AuthPage } from '@/presentation/pages/identity/AuthPage'
@@ -20,8 +22,10 @@ export function AppRouter() {
   return (
     <IdentitySessionGate>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/:locale" element={<LocalizedHomePage />} />
+        <Route element={<Layout navSections={APP_NAV_SECTIONS} />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/:locale" element={<LocalizedHomePage />} />
+        </Route>
         <Route path="/identity/create-user" element={<AuthPage />} />
         <Route path="/auth/callback" element={<AuthPage />} />
         <Route path="/:locale/identity/create-user" element={<LocalizedCreateUserPage />} />
