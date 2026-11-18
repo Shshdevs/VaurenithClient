@@ -49,7 +49,7 @@ function AppRouterProvider() {
 
 export function App() {
   return (
-    <MantineProvider theme={theme} defaultColorScheme="auto">
+    <MantineProvider theme={theme} defaultColorScheme="dark">
       <ApiClientProvider apiClient={apiClient}>
         <PlatformProvider platform={platform}>
           <IdentityApiProvider identityApi={identityApi}>
