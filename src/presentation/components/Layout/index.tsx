@@ -103,6 +103,7 @@ export function Layout({ navSections }: LayoutProps) {
       <AppShell.Header>
         <Group className={css.headerGroup}>
           <Burger
+            className={css.burger}
             opened={mobileOpened}
             onClick={toggleMobile}
             hiddenFrom="sm"
@@ -110,6 +111,7 @@ export function Layout({ navSections }: LayoutProps) {
             aria-label={t('layout.burgerLabel')}
           />
           <Burger
+            className={css.burger}
             opened={!isCollapsed}
             onClick={toggleDesktop}
             visibleFrom="sm"

@@ -12,6 +12,12 @@ $navbar-text-duration: 160ms;
 .headerGroup {
   height: 100%;
   padding-inline: var(--mantine-spacing-md);
+
+  .burger {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 .header {
