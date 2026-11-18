@@ -1,7 +1,7 @@
 import { Alert, Button, Center, Loader, Stack, Text } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
-import type { ReactNode } from 'react'
+import type { ComponentType, ReactNode } from 'react'
 import { Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom'
 import { Layout } from '@/presentation/components/Layout'
 import { APP_NAV_SECTIONS } from './consts'
@@ -11,11 +11,25 @@ import { AuthPage } from '@/presentation/pages/identity/AuthPage'
 import { useIdentitySession } from './session/useIdentitySession'
 
 type SessionState = 'checking' | 'active' | 'inactive' | 'error'
+type SupportedLocale = 'en' | 'ru'
 
-function LocalizedHomePage() {
+function isSupportedLocale(locale: string | undefined): locale is SupportedLocale {
+  return locale === 'en' || locale === 'ru'
+}
+
+function LocalizedPage({ page: Page }: { page: ComponentType }) {
   const { locale } = useParams()
 
-  return locale === 'en' || locale === 'ru' ? <HomePage /> : <NotFoundPage />
+  return isSupportedLocale(locale) ? <Page /> : <NotFoundPage />
+}
+
+function getLocalePath(pathname: string) {
+  const locale = pathname.split('/')[1]
+  return isSupportedLocale(locale) ? `/${locale}` : ''
+}
+
+function isIdentityFlowPath(pathname: string) {
+  return pathname === '/auth/callback' || /^\/(?:en|ru)?\/identity\/create-user$/.test(pathname)
 }
 
 export function AppRouter() {
@@ -24,21 +38,15 @@ export function AppRouter() {
       <Routes>
         <Route element={<Layout navSections={APP_NAV_SECTIONS} />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/:locale" element={<LocalizedHomePage />} />
+          <Route path="/:locale" element={<LocalizedPage page={HomePage} />} />
         </Route>
         <Route path="/identity/create-user" element={<AuthPage />} />
         <Route path="/auth/callback" element={<AuthPage />} />
-        <Route path="/:locale/identity/create-user" element={<LocalizedCreateUserPage />} />
+        <Route path="/:locale/identity/create-user" element={<LocalizedPage page={AuthPage} />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </IdentitySessionGate>
   )
-}
-
-function LocalizedCreateUserPage() {
-  const { locale } = useParams()
-
-  return locale === 'en' || locale === 'ru' ? <AuthPage /> : <NotFoundPage />
 }
 
 function IdentitySessionGate({ children }: { children: ReactNode }) {
@@ -47,12 +55,10 @@ function IdentitySessionGate({ children }: { children: ReactNode }) {
   const { pathname } = useLocation()
   const [state, setState] = useState<SessionState>('checking')
   const [retryCount, setRetryCount] = useState(0)
-  const localeSegment = pathname.split('/')[1]
-  const locale = localeSegment === 'en' || localeSegment === 'ru' ? localeSegment : ''
-  const createUserPath = `${locale ? `/${locale}` : ''}/identity/create-user`
-  const homePath = locale ? `/${locale}` : '/'
-  const isCreateUserPage = pathname === '/identity/create-user' || /^\/(en|ru)\/identity\/create-user$/.test(pathname)
-  const isIdentityFlowPage = isCreateUserPage || pathname === '/auth/callback'
+  const localePath = getLocalePath(pathname)
+  const createUserPath = `${localePath}/identity/create-user`
+  const homePath = localePath || '/'
+  const isIdentityFlowPage = isIdentityFlowPath(pathname)
 
   useEffect(() => {
     let isMounted = true
