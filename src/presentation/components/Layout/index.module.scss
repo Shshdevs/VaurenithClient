@@ -2,11 +2,16 @@
 
 $navbar-link-min-height: 56px;
 $navbar-link-padding-block: 12px;
-$navbar-link-padding-inline: 8px;
+$navbar-link-padding-inline: 15px;
 $navbar-text-duration: 160ms;
+$navbar-content-offset: 6px;
 
 .layout {
   min-height: 100vh;
+
+  &[data-navbar-animating] {
+    --app-shell-transition-duration: 420ms !important;
+  }
 }
 
 .headerGroup {
@@ -14,8 +19,14 @@ $navbar-text-duration: 160ms;
   padding-inline: var(--mantine-spacing-md);
 
   .burger {
+    transition: transform $navbar-text-duration ease;
+
     &:hover {
       cursor: pointer;
+    }
+
+    &:active {
+      transform: scale(0.88);
     }
   }
 }
@@ -29,10 +40,12 @@ $navbar-text-duration: 160ms;
 .navbar.navbar {
   background-color: var(--mantine-color-body);
   border-color: var(--mantine-color-default-border);
+  overflow: hidden;
   padding: var(--mantine-spacing-md) var(--mantine-spacing-sm);
   transition-property: width, transform, top, height;
   transition-duration: var(--app-shell-transition-duration);
   transition-timing-function: var(--app-shell-transition-timing-function);
+  will-change: width, transform;
 }
 
 .resizeHandle.resizeHandle {
@@ -43,6 +56,7 @@ $navbar-text-duration: 160ms;
   height: 88px;
   flex: 0 0 88px;
   overflow: hidden;
+  padding-inline: $navbar-link-padding-inline;
 }
 
 .navbarText {
@@ -50,13 +64,25 @@ $navbar-text-duration: 160ms;
   overflow: hidden;
   overflow-wrap: anywhere;
   white-space: normal;
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity $navbar-text-duration ease,
+    transform $navbar-text-duration ease,
+    visibility 0s linear;
   -webkit-box-orient: vertical;
   line-clamp: 2;
   -webkit-line-clamp: 2;
 }
 
 .navbarTextCollapsed {
+  opacity: 0;
+  transform: translateX(-$navbar-content-offset);
   visibility: hidden;
+  transition:
+    opacity $navbar-text-duration ease,
+    transform $navbar-text-duration ease,
+    visibility 0s linear $navbar-text-duration;
 }
 
 .navBar {
@@ -70,11 +96,33 @@ $navbar-text-duration: 160ms;
   }
 }
 
+.navSectionTitle {
+  margin: 0;
+  padding-inline: $navbar-link-padding-inline;
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity $navbar-text-duration ease,
+    transform $navbar-text-duration ease,
+    visibility 0s linear;
+}
+
+.navSectionTitleCollapsed {
+  opacity: 0;
+  transform: translateX(-$navbar-content-offset);
+  visibility: hidden;
+  transition:
+    opacity $navbar-text-duration ease,
+    transform $navbar-text-duration ease,
+    visibility 0s linear $navbar-text-duration;
+}
+
 .navLink {
+  box-sizing: border-box;
   width: 100%;
   min-height: $navbar-link-min-height;
   padding-block: $navbar-link-padding-block;
-  padding-inline: 4px;
+  padding-inline: $navbar-link-padding-inline;
   border-radius: 12px;
 
   &.navLink:hover,
@@ -118,5 +166,19 @@ $navbar-text-duration: 160ms;
   overflow: hidden;
   white-space: nowrap;
   opacity: 1;
-  transition: opacity $navbar-text-duration ease;
+  transform: translateX(0);
+  transition:
+    opacity $navbar-text-duration ease,
+    transform $navbar-text-duration ease,
+    visibility 0s linear;
+}
+
+.navLinkLabelCollapsed {
+  opacity: 0;
+  transform: translateX(-$navbar-content-offset);
+  visibility: hidden;
+  transition:
+    opacity $navbar-text-duration ease,
+    transform $navbar-text-duration ease,
+    visibility 0s linear $navbar-text-duration;
 }

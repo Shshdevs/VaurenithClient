@@ -10,6 +10,7 @@ import css from './index.module.scss'
 
 const NAVBAR_MIN_WIDTH = 86
 const NAVBAR_MAX_WIDTH = 300
+const NAVBAR_TRANSITION_DURATION = 420
 const INITIAL_RESIZE_SIZES = { navbar: NAVBAR_MAX_WIDTH }
 
 type NavbarLink = {
@@ -31,6 +32,7 @@ export function Layout({ navSections }: LayoutProps) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
   const [expandedWidth, setExpandedWidth] = useState(NAVBAR_MAX_WIDTH)
   const [currentWidth, setCurrentWidth] = useState(NAVBAR_MAX_WIDTH)
+  const [isNavbarAnimating, setIsNavbarAnimating] = useState(false)
   const navLinksRef = useRef<HTMLDivElement>(null)
   const isCollapsed = currentWidth < NAVBAR_MIN_WIDTH + 1
   const resize = useAppShellResize({
@@ -53,7 +55,7 @@ export function Layout({ navSections }: LayoutProps) {
   })
 
   useEffect(() => {
-    if (isCollapsed) {
+    if (isCollapsed || isNavbarAnimating) {
       return
     }
 
@@ -75,12 +77,13 @@ export function Layout({ navSections }: LayoutProps) {
     }
 
     setExpandedWidth(currentWidth)
-  }, [currentWidth, isCollapsed, navSections, resize.navbar])
+  }, [currentWidth, isCollapsed, isNavbarAnimating, navSections, resize.navbar])
 
   const toggleDesktop = () => {
     const nextOpened = isCollapsed
     const nextWidth = nextOpened ? expandedWidth : NAVBAR_MIN_WIDTH
 
+    setIsNavbarAnimating(true)
     setCurrentWidth(nextWidth)
     resize.navbar.setSize(nextWidth)
   }
@@ -88,8 +91,9 @@ export function Layout({ navSections }: LayoutProps) {
   return (
     <AppShell
       className={css.layout}
+      data-navbar-animating={isNavbarAnimating || undefined}
       header={{ height: 60 }}
-      transitionDuration={320}
+      transitionDuration={NAVBAR_TRANSITION_DURATION}
       transitionTimingFunction="cubic-bezier(0.22, 1, 0.36, 1)"
       navbar={{
         width: NAVBAR_MAX_WIDTH,
@@ -122,23 +126,28 @@ export function Layout({ navSections }: LayoutProps) {
         </Group>
       </AppShell.Header>
 
-      <AppShell.Navbar className={css.navbar}>
+      <AppShell.Navbar
+        className={css.navbar}
+        onTransitionEnd={(event) => {
+          if (event.currentTarget === event.target && event.propertyName === 'width') {
+            setIsNavbarAnimating(false)
+          }
+        }}
+      >
         <AppShell.Section className={css.navbarSection}>
           <span className={`${css.navbarText} ${isCollapsed ? css.navbarTextCollapsed : ''}`}>
             {t('layout.header')}
           </span>
         </AppShell.Section>
 
-        <AppShell.Section grow component={ScrollArea} className={css.navBar}>
+        <AppShell.Section grow component={ScrollArea} scrollbars="y" className={css.navBar}>
           <div ref={navLinksRef} className={css.navLinksRef}>
             {navSections.map((navSection) => {
               return (
                 <div className={css.navSection} key={navSection.title}>
                   <Title
                     size="lg"
-                    ml="sm"
-                    className={`${css.navSectionTitle} 
-                    ${isCollapsed ? css.navbarTextCollapsed : ''}`}
+                    className={`${css.navSectionTitle} ${isCollapsed ? css.navSectionTitleCollapsed : ''}`}
                   >
                     {t(navSection.title as never)}
                   </Title>
@@ -166,12 +175,12 @@ export function Layout({ navSections }: LayoutProps) {
                             icon
                           )
                         }
-                        label={isCollapsed ? null : label}
+                        label={label}
                         classNames={{
                           root: css.navLink,
                           section: css.navLinkSection,
                           body: css.navLinkBody,
-                          label: css.navLinkLabel,
+                          label: `${css.navLinkLabel} ${isCollapsed ? css.navLinkLabelCollapsed : ''}`,
                         }}
                       />
                     )
