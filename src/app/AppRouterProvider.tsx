@@ -1,7 +1,7 @@
 import { BrowserRouter, HashRouter } from 'react-router-dom'
 import { LanguageSync } from './LanguageSync'
-import { AppRouter } from '@/presentation/app/AppRouter'
-import { usePlatform } from '@/presentation/app/usePlatform'
+import { AppRouter } from '@/presentation/app/routing/AppRouter'
+import { usePlatform } from '@/presentation/hooks/app/platform/usePlatform'
 
 export function AppRouterProvider() {
   const platform = usePlatform()

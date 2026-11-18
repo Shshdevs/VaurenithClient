@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { PlatformContext } from './PlatformContext'
+import { PlatformContext } from '@/presentation/app/platform/PlatformContext'
 
 export function usePlatform() {
   const platform = useContext(PlatformContext)

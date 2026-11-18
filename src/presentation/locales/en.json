@@ -6,8 +6,14 @@
     "resizeNavbar": "Resize navigation panel"
   },
   "navigation": {
+    "main": "Main",
     "home": "Home",
-    "projects": "Projects"
+    "projects": "Projects",
+    "containers": "Containers",
+    "devices": "Devices",
+
+    "settings": "Settings",
+    "main_settings": "Common"
   },
   "home": {
     "title": "Main",

@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { IdentityApiContext } from './IdentityApiContext'
+import { IdentityApiContext } from '@/presentation/app/backend/identity/IdentityApiContext'
 
 export function useIdentityApi() {
   const identityApi = useContext(IdentityApiContext)

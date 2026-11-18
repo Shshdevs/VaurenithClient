@@ -6,8 +6,14 @@
     "resizeNavbar": "Изменить ширину навигационной панели"
   },
   "navigation": {
+    "main": "Основные",
     "home": "Главная",
-    "projects": "Проекты"
+    "projects": "Проекты",
+    "containers": "Контенйеры",
+    "devices": "Устройства",
+
+    "settings": "Настройки",
+    "main_settings": "Общие"
   },
   "home": {
     "title": "Главная",

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { IdentityAuthProvider } from '@/presentation/app/identity/IdentityAuthProvider'
-import { PlatformProvider } from '@/presentation/app/PlatformProvider'
+import { PlatformProvider } from '@/presentation/app/platform/PlatformProvider'
 import { BackendProviders } from './BackendProviders'
 import { createAppDependencies } from './createAppDependencies'
 
