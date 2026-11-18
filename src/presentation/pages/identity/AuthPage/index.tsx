@@ -1,5 +1,4 @@
-import { Alert, Button, Container, Flex, Image, Paper, Stack, Title, Text } from '@mantine/core'
-import { Carousel } from '@mantine/carousel'
+import { Alert, Button, Container, Paper, Stack, Title, Text } from '@mantine/core'
 import type { TFunction } from 'i18next'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
@@ -8,7 +7,6 @@ import { useIdentityAuth } from '@/presentation/app/identity/useIdentityAuth'
 import { usePlatform } from '@/presentation/app/usePlatform'
 import { BrandLogo } from '@/presentation/components/BrandLogo'
 import { completeIdentityFlow } from './identityFlow'
-import { AUTH_POSTER_SLIDES } from './consts'
 import css from './index.module.scss'
 const NICKNAME_KEY = 'vaurenith.nickname'
 
@@ -48,46 +46,37 @@ export function AuthPage() {
   return (
     <main className={css.page}>
       <Container fluid className={css.container}>
-        <Flex className={css.content} direction="row" gap="md">
-          <Paper className={css.posterPanel}>
-            <Carousel
-              className={css.carousel}
-              slideSize="90%"
-              height="100%"
-              emblaOptions={{
-                loop: true,
-                dragFree: false,
-                align: 'center',
-              }}
-              slideGap={10}
-              withControls={false}
-            >
-              {AUTH_POSTER_SLIDES.map(({ src, alt }) => (
-                <Carousel.Slide key={src} className={css.poster}>
-                  <Image src={src} alt={alt} h="100%" fit="cover" radius="md" />
-                </Carousel.Slide>
-              ))}
-            </Carousel>
-          </Paper>
-          <Container className={css.formPanel}>
+        <Paper className={css.card} withBorder>
+          <Container className={css.formPanel} mb="md">
             <BrandLogo large className={css.brandLogo} />
-            <Title order={1} mb="lg" className={css.title}>
+            <Title mb="md" order={1} className={css.title}>
               {t('registration.title')}
             </Title>
-            <Text size="lg" mb="xl" className={css.quote}>
+            <Text mb="xl" className={css.quote}>
               {t('registration.quote')}
             </Text>
-            <Stack gap="md">
+            <Stack className={css.actions}>
               {error && <Alert color="red">{error}</Alert>}
-              <Button fullWidth disabled={isSubmitting} onClick={() => void authorize('register')}>
+              <Button
+                className={css.actionButton}
+                fullWidth
+                disabled={isSubmitting}
+                onClick={() => void authorize('register')}
+              >
                 {t('registration.createAccount')}
               </Button>
-              <Button fullWidth variant="default" disabled={isSubmitting} onClick={() => void authorize('login')}>
+              <Button
+                className={css.actionButton}
+                fullWidth
+                variant="default"
+                disabled={isSubmitting}
+                onClick={() => void authorize('login')}
+              >
                 {t('registration.signIn')}
               </Button>
             </Stack>
           </Container>
-        </Flex>
+        </Paper>
       </Container>
     </main>
   )
