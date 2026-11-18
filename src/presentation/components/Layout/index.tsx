@@ -1,9 +1,10 @@
 import { AppShell, Burger, Group, NavLink, ScrollArea, Tooltip } from '@mantine/core'
 import { useAppShellResize } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { LucideIcon } from 'lucide-react'
+import { Outlet } from 'react-router-dom'
 import { BrandLogo } from '@/presentation/components/BrandLogo'
 import css from './index.module.scss'
 
@@ -13,15 +14,14 @@ const INITIAL_RESIZE_SIZES = { navbar: NAVBAR_MAX_WIDTH }
 
 type NavbarLink = {
   icon: LucideIcon
-  labelKey: 'navigation.home' | 'navigation.projects'
+  labelKey: string
 }
 
 type LayoutProps = {
-  children: ReactNode
   navLinks: NavbarLink[]
 }
 
-export function Layout({ children, navLinks }: LayoutProps) {
+export function Layout({ navLinks }: LayoutProps) {
   const { t } = useTranslation('presentation')
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
   const [expandedWidth, setExpandedWidth] = useState(NAVBAR_MAX_WIDTH)
@@ -126,7 +126,7 @@ export function Layout({ children, navLinks }: LayoutProps) {
           <div ref={navLinksRef}>
             {navLinks.map((navLink) => {
               const Icon = navLink.icon
-              const label = t(navLink.labelKey)
+              const label = t(navLink.labelKey as never)
               const icon = (
                 <span className={css.navLinkIcon}>
                   <Icon />
@@ -166,7 +166,9 @@ export function Layout({ children, navLinks }: LayoutProps) {
           </span>
         </AppShell.Section>
       </AppShell.Navbar>
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <Outlet />
+      </AppShell.Main>
     </AppShell>
   )
 }
