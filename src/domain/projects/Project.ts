@@ -1,10 +1,12 @@
+import type { UserId } from '../identity/User'
+
 export type ProjectId = string
 export type ProjectStatus = 'active' | 'archived'
 export type ProjectType = 'software' | 'infrastructure' | 'fullstack' | 'other'
 
 export type Project = {
   id: ProjectId
-  userId: string
+  userId: UserId
   name: string
   slug: string
   description: string | null
