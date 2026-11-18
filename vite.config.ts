@@ -15,6 +15,7 @@ export default defineConfig(({ mode }) => {
   return {
     resolve: {
       alias: {
+        '@assets': fileURLToPath(new URL('./assets', import.meta.url)),
         '@': fileURLToPath(new URL('./src', import.meta.url)),
         variables: fileURLToPath(new URL('./src/app/styles/variable.scss', import.meta.url)),
       },

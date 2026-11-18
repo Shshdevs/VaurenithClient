@@ -1,4 +1,5 @@
-import { Alert, Button, Container, Paper, Stack, Title } from '@mantine/core'
+import { Alert, Button, Container, Flex, Image, Paper, Stack, Title, Text } from '@mantine/core'
+import { Carousel } from '@mantine/carousel'
 import type { TFunction } from 'i18next'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
@@ -7,8 +8,8 @@ import { useIdentityAuth } from '@/presentation/app/identity/useIdentityAuth'
 import { usePlatform } from '@/presentation/app/usePlatform'
 import { BrandLogo } from '@/presentation/components/BrandLogo'
 import { completeIdentityFlow } from './identityFlow'
+import { AUTH_POSTER_SLIDES } from './consts'
 import css from './index.module.scss'
-
 const NICKNAME_KEY = 'vaurenith.nickname'
 
 export function AuthPage() {
@@ -46,22 +47,47 @@ export function AuthPage() {
 
   return (
     <main className={css.page}>
-      <Container size={440}>
-        <Paper className={css.card} withBorder p="xl" radius="lg">
-          <BrandLogo className={css.brandLogo} />
-          <Title order={1} className={css.title}>
-            {t('registration.title')}
-          </Title>
-          <Stack gap="md">
-            {error && <Alert color="red">{error}</Alert>}
-            <Button fullWidth disabled={isSubmitting} onClick={() => void authorize('register')}>
-              {t('registration.createAccount')}
-            </Button>
-            <Button fullWidth variant="default" disabled={isSubmitting} onClick={() => void authorize('login')}>
-              {t('registration.signIn')}
-            </Button>
-          </Stack>
-        </Paper>
+      <Container fluid className={css.container}>
+        <Flex className={css.content} direction="row" gap="md">
+          <Paper className={css.posterPanel}>
+            <Carousel
+              className={css.carousel}
+              slideSize="90%"
+              height="100%"
+              emblaOptions={{
+                loop: true,
+                dragFree: false,
+                align: 'center',
+              }}
+              slideGap={10}
+              withControls={false}
+            >
+              {AUTH_POSTER_SLIDES.map(({ src, alt }) => (
+                <Carousel.Slide key={src} className={css.poster}>
+                  <Image src={src} alt={alt} h="100%" fit="cover" radius="md" />
+                </Carousel.Slide>
+              ))}
+            </Carousel>
+          </Paper>
+          <Container className={css.formPanel}>
+            <BrandLogo large className={css.brandLogo} />
+            <Title order={1} mb="lg" className={css.title}>
+              {t('registration.title')}
+            </Title>
+            <Text size="lg" mb="xl" className={css.quote}>
+              {t('registration.quote')}
+            </Text>
+            <Stack gap="md">
+              {error && <Alert color="red">{error}</Alert>}
+              <Button fullWidth disabled={isSubmitting} onClick={() => void authorize('register')}>
+                {t('registration.createAccount')}
+              </Button>
+              <Button fullWidth variant="default" disabled={isSubmitting} onClick={() => void authorize('login')}>
+                {t('registration.signIn')}
+              </Button>
+            </Stack>
+          </Container>
+        </Flex>
       </Container>
     </main>
   )
