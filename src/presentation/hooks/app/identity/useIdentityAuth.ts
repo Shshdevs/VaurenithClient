@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { IdentityAuthContext } from './IdentityAuthContext'
+import { IdentityAuthContext } from '@/presentation/app/identity/IdentityAuthContext'
 
 export function useIdentityAuth() {
   const identityAuth = useContext(IdentityAuthContext)

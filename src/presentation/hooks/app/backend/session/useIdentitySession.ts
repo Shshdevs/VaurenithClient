@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { IdentitySessionContext } from './IdentitySessionContext'
+import { IdentitySessionContext } from '@/presentation/app/backend/session/IdentitySessionContext'
 
 export function useIdentitySession() {
   const identitySession = useContext(IdentitySessionContext)

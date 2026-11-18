@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { ProjectsApiContext } from './ProjectsApiContext'
+import { ProjectsApiContext } from '@/presentation/app/backend/projects/ProjectsApiContext'
 
 export function useProjectsApi() {
   const projectsApi = useContext(ProjectsApiContext)
