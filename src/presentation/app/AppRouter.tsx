@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom'
 import { Layout } from '@/presentation/components/Layout'
-import { APP_NAV_LINKS } from './consts'
+import { APP_NAV_SECTIONS } from './consts'
 import { HomePage } from '@/presentation/pages/HomePage'
 import { NotFoundPage } from '@/presentation/pages/NotFoundPage'
 import { AuthPage } from '@/presentation/pages/identity/AuthPage'
@@ -22,7 +22,7 @@ export function AppRouter() {
   return (
     <IdentitySessionGate>
       <Routes>
-        <Route element={<Layout navLinks={[...APP_NAV_LINKS]} />}>
+        <Route element={<Layout navSections={APP_NAV_SECTIONS} />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/:locale" element={<LocalizedHomePage />} />
         </Route>

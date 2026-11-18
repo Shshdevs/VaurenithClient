@@ -1,4 +1,4 @@
-import { AppShell, Burger, Group, NavLink, ScrollArea, Tooltip } from '@mantine/core'
+import { AppShell, Burger, Group, NavLink, ScrollArea, Tooltip, Title } from '@mantine/core'
 import { useAppShellResize } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useEffect, useRef, useState } from 'react'
@@ -17,11 +17,16 @@ type NavbarLink = {
   labelKey: string
 }
 
-type LayoutProps = {
-  navLinks: NavbarLink[]
+type NavbarSection = {
+  title: string
+  navLinks: readonly NavbarLink[]
 }
 
-export function Layout({ navLinks }: LayoutProps) {
+type LayoutProps = {
+  navSections: readonly NavbarSection[]
+}
+
+export function Layout({ navSections }: LayoutProps) {
   const { t } = useTranslation('presentation')
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
   const [expandedWidth, setExpandedWidth] = useState(NAVBAR_MAX_WIDTH)
@@ -70,7 +75,7 @@ export function Layout({ navLinks }: LayoutProps) {
     }
 
     setExpandedWidth(currentWidth)
-  }, [currentWidth, isCollapsed, navLinks, resize.navbar])
+  }, [currentWidth, isCollapsed, navSections, resize.navbar])
 
   const toggleDesktop = () => {
     const nextOpened = isCollapsed
@@ -122,39 +127,54 @@ export function Layout({ navLinks }: LayoutProps) {
           </span>
         </AppShell.Section>
 
-        <AppShell.Section grow component={ScrollArea} className={css.navLinks}>
-          <div ref={navLinksRef}>
-            {navLinks.map((navLink) => {
-              const Icon = navLink.icon
-              const label = t(navLink.labelKey as never)
-              const icon = (
-                <span className={css.navLinkIcon}>
-                  <Icon />
-                </span>
-              )
-
+        <AppShell.Section grow component={ScrollArea} className={css.navBar}>
+          <div ref={navLinksRef} className={css.navLinksRef}>
+            {navSections.map((navSection) => {
               return (
-                <NavLink
-                  href="#"
-                  key={navLink.labelKey}
-                  onClick={(event) => event.preventDefault()}
-                  leftSection={
-                    isCollapsed ? (
-                      <Tooltip label={label} position="right">
-                        {icon}
-                      </Tooltip>
-                    ) : (
-                      icon
+                <div className={css.navSection} key={navSection.title}>
+                  <Title
+                    size="lg"
+                    ml="sm"
+                    className={`${css.navSectionTitle} 
+                    ${isCollapsed ? css.navbarTextCollapsed : ''}`}
+                  >
+                    {t(navSection.title as never)}
+                  </Title>
+
+                  {navSection.navLinks.map((navLink) => {
+                    const Icon = navLink.icon
+                    const label = t(navLink.labelKey as never)
+                    const icon = (
+                      <span className={css.navLinkIcon}>
+                        <Icon />
+                      </span>
                     )
-                  }
-                  label={isCollapsed ? null : label}
-                  classNames={{
-                    root: css.navLink,
-                    section: css.navLinkSection,
-                    body: css.navLinkBody,
-                    label: css.navLinkLabel,
-                  }}
-                />
+
+                    return (
+                      <NavLink
+                        href="#"
+                        key={navLink.labelKey}
+                        onClick={(event) => event.preventDefault()}
+                        leftSection={
+                          isCollapsed ? (
+                            <Tooltip label={label} position="right">
+                              {icon}
+                            </Tooltip>
+                          ) : (
+                            icon
+                          )
+                        }
+                        label={isCollapsed ? null : label}
+                        classNames={{
+                          root: css.navLink,
+                          section: css.navLinkSection,
+                          body: css.navLinkBody,
+                          label: css.navLinkLabel,
+                        }}
+                      />
+                    )
+                  })}
+                </div>
               )
             })}
           </div>
