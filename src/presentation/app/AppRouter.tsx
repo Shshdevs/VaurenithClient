@@ -5,7 +5,7 @@ import type { ReactNode } from 'react'
 import { Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom'
 import { HomePage } from '@/presentation/pages/HomePage'
 import { NotFoundPage } from '@/presentation/pages/NotFoundPage'
-import { CreateUserPage } from '@/presentation/pages/identity/CreateUser'
+import { AuthPage } from '@/presentation/pages/identity/AuthPage'
 import { useIdentitySession } from './session/useIdentitySession'
 
 type SessionState = 'checking' | 'active' | 'inactive' | 'error'
@@ -22,8 +22,8 @@ export function AppRouter() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/:locale" element={<LocalizedHomePage />} />
-        <Route path="/identity/create-user" element={<CreateUserPage />} />
-        <Route path="/auth/callback" element={<CreateUserPage />} />
+        <Route path="/identity/create-user" element={<AuthPage />} />
+        <Route path="/auth/callback" element={<AuthPage />} />
         <Route path="/:locale/identity/create-user" element={<LocalizedCreateUserPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
@@ -34,7 +34,7 @@ export function AppRouter() {
 function LocalizedCreateUserPage() {
   const { locale } = useParams()
 
-  return locale === 'en' || locale === 'ru' ? <CreateUserPage /> : <NotFoundPage />
+  return locale === 'en' || locale === 'ru' ? <AuthPage /> : <NotFoundPage />
 }
 
 function IdentitySessionGate({ children }: { children: ReactNode }) {

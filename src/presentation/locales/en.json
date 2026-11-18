@@ -15,6 +15,7 @@
   },
   "registration": {
     "title": "Welcome",
+    "quote": "A Unified Workspace for Managing Projects, Code, and Infrastructure.",
     "createAccount": "Create an account",
     "signIn": "Sign in",
     "oidcError": "Keycloak sign-in could not be completed. Please try again.",

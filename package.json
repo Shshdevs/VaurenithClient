@@ -1,5 +1,5 @@
 {
-  "packageManager": "pnpm@12.18.0",
+  "packageManager": "pnpm@12.21.0",
   "name": "vaurenithweb",
   "private": true,
   "version": "0.0.0",
@@ -31,6 +31,7 @@
     "*.{json,md,yml,yaml,html,css,scss,js,jsx,ts,tsx}": "prettier --write"
   },
   "dependencies": {
+    "@mantine/carousel": "^9.8.1",
     "@mantine/core": "^9.8.1",
     "@mantine/form": "^9.8.1",
     "@mantine/hooks": "^9.8.1",

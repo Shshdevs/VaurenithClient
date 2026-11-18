@@ -17,6 +17,7 @@ import { SessionApiProvider } from '@/presentation/app/session/SessionApiProvide
 import { ProjectsApiProvider } from '@/presentation/app/projects/ProjectsApiProvider'
 import theme from './AppTheme'
 import '@mantine/core/styles.css'
+import '@mantine/carousel/styles.css'
 import { MantineProvider } from '@mantine/core'
 import { createPlatformAdapter } from './platform'
 
