@@ -1,6 +1,6 @@
 import type { MantineThemeOverride } from '@mantine/core'
 
-const theme: MantineThemeOverride = {
+const appTheme: MantineThemeOverride = {
   colors: {
     dark: [
       '#eef0f8',
@@ -285,4 +285,4 @@ const theme: MantineThemeOverride = {
   },
 }
 
-export default theme
+export default appTheme

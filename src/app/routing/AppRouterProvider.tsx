@@ -1,5 +1,5 @@
 import { BrowserRouter, HashRouter } from 'react-router-dom'
-import { LanguageSync } from './LanguageSync'
+import { LanguageSync } from '@/app/localization/LanguageSync'
 import { AppRouter } from '@/presentation/app/routing/AppRouter'
 import { usePlatform } from '@/presentation/hooks/app/platform/usePlatform'
 

@@ -11,7 +11,7 @@ import { SessionApiClient } from '@/infrastructure/api/session/SessionApiClient'
 import { KeycloakOidcClient } from '@/infrastructure/identity/KeycloakOidcClient'
 import { ApiIdentitySession } from '@/infrastructure/session/ApiIdentitySession'
 import { LocalAccessTokenStore } from '@/infrastructure/session/LocalAccessTokenStore'
-import { createPlatformAdapter } from './platform'
+import { createPlatformAdapter } from '@/app/platform/createPlatformAdapter'
 
 export type BackendDependencies = {
   identityApi: IdentityApi

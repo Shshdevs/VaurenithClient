@@ -3,7 +3,7 @@ import { IdentityApiProvider } from '@/presentation/app/backend/identity/Identit
 import { ProjectsApiProvider } from '@/presentation/app/backend/projects/ProjectsApiProvider'
 import { IdentitySessionProvider } from '@/presentation/app/backend/session/IdentitySessionProvider'
 import { SessionApiProvider } from '@/presentation/app/backend/session/SessionApiProvider'
-import type { BackendDependencies } from './createAppDependencies'
+import type { BackendDependencies } from '@/app/composition/createAppDependencies'
 
 type BackendProvidersProps = {
   dependencies: BackendDependencies
