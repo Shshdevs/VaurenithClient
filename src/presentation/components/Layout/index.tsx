@@ -129,16 +129,14 @@ export function Layout({ navSections }: LayoutProps) {
           </span>
         </AppShell.Section>
 
-        <AppShell.Section grow component={ScrollArea} className={css.navBar}>
+        <AppShell.Section grow component={ScrollArea} scrollbars="y" className={css.navBar}>
           <div ref={navLinksRef} className={css.navLinksRef}>
             {navSections.map((navSection) => {
               return (
                 <div className={css.navSection} key={navSection.title}>
                   <Title
                     size="lg"
-                    ml="sm"
-                    className={`${css.navSectionTitle} 
-                    ${isCollapsed ? css.navbarTextCollapsed : ''}`}
+                    className={`${css.navSectionTitle} ${isCollapsed ? css.navSectionTitleCollapsed : ''}`}
                   >
                     {t(navSection.title as never)}
                   </Title>

@@ -43,6 +43,7 @@ $navbar-text-duration: 160ms;
   height: 88px;
   flex: 0 0 88px;
   overflow: hidden;
+  padding-inline: $navbar-link-padding-inline;
 }
 
 .navbarText {
@@ -70,11 +71,26 @@ $navbar-text-duration: 160ms;
   }
 }
 
+.navSectionTitle {
+  margin: 0;
+  padding-inline: $navbar-link-padding-inline;
+}
+
+.navSectionTitleCollapsed {
+  width: 0;
+  max-width: 0;
+  padding-inline: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  visibility: hidden;
+}
+
 .navLink {
+  box-sizing: border-box;
   width: 100%;
   min-height: $navbar-link-min-height;
   padding-block: $navbar-link-padding-block;
-  padding-inline: 4px;
+  padding-inline: $navbar-link-padding-inline;
   border-radius: 12px;
 
   &.navLink:hover,
