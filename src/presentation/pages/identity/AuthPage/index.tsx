@@ -2,12 +2,13 @@ import { Alert, Button, Container, Paper, Stack, Title, Text } from '@mantine/co
 import type { TFunction } from 'i18next'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
-import { useIdentityApi } from '@/presentation/app/identity/useIdentityApi'
-import { useIdentityAuth } from '@/presentation/app/identity/useIdentityAuth'
-import { usePlatform } from '@/presentation/app/usePlatform'
+import { useIdentityApi } from '@/presentation/hooks/app/backend/identity/useIdentityApi'
+import { useIdentityAuth } from '@/presentation/hooks/app/identity/useIdentityAuth'
+import { usePlatform } from '@/presentation/hooks/app/platform/usePlatform'
 import { BrandLogo } from '@/presentation/components/BrandLogo'
 import { completeIdentityFlow } from './identityFlow'
 import css from './index.module.scss'
+
 const NICKNAME_KEY = 'vaurenith.nickname'
 
 export function AuthPage() {

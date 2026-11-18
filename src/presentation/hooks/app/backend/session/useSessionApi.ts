@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { SessionApiContext } from './SessionApiContext'
+import { SessionApiContext } from '@/presentation/app/backend/session/SessionApiContext'
 
 export function useSessionApi() {
   const sessionApi = useContext(SessionApiContext)
