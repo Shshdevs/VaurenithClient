@@ -31,6 +31,7 @@
     "*.{json,md,yml,yaml,html,css,scss,js,jsx,ts,tsx}": "prettier --write"
   },
   "dependencies": {
+    "@mantine/carousel": "^9.8.1",
     "@mantine/core": "^9.8.1",
     "@mantine/form": "^9.8.1",
     "@mantine/hooks": "^9.8.1",
