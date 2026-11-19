@@ -10,15 +10,15 @@ export type Device = {
   slug: string
   hostname: string | null
   description: string | null
-  device_type: DeviceType
-  operating_system: string | null
-  os_version: string | null
+  deviceType: DeviceType
+  operatingSystem: string | null
+  osVersion: string | null
   architecture: string | null
   tags: string[] | null
-  last_seen_at: Date | null
-  last_status_at: Date | null
+  lastSeenAt: Date | null
+  lastStatusAt: Date | null
   version: number
-  created_at: Date
-  updated_at: Date
-  deleted_at: Date | null
+  createdAt: Date
+  updatedAt: Date
+  deletedAt: Date | null
 }

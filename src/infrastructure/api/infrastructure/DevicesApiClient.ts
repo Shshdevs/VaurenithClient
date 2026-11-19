@@ -14,17 +14,17 @@ type DeviceResponse = {
   slug: string
   description: string | null
   hostname: string | null
-  device_type: Device['device_type']
+  device_type: Device['deviceType']
   operating_system: string | null
   os_version: string | null
   architecture: string | null
   tags: string[] | null
-  last_seen_at: Date | null
-  last_status_at: Date | null
+  last_seen_at: string | null
+  last_status_at: string | null
   version: number
-  created_at: Date
-  updated_at: Date
-  deleted_at: Date | null
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
 }
 
 const API_VERSION_PATH = '/api/v1'
@@ -106,17 +106,17 @@ function mapDevice(device: DeviceResponse): Device {
     slug: device.slug,
     description: device.description,
     hostname: device.hostname,
-    device_type: device.device_type,
-    operating_system: device.operating_system,
-    os_version: device.os_version,
+    deviceType: device.device_type,
+    operatingSystem: device.operating_system,
+    osVersion: device.os_version,
     architecture: device.architecture,
     tags: device.tags,
-    last_seen_at: device.last_seen_at,
-    last_status_at: device.last_status_at,
+    lastSeenAt: device.last_seen_at ? new Date(device.last_seen_at) : null,
+    lastStatusAt: device.last_status_at ? new Date(device.last_status_at) : null,
     version: device.version,
-    created_at: new Date(device.created_at),
-    updated_at: new Date(device.updated_at),
-    deleted_at: device.deleted_at ? new Date(device.deleted_at) : null,
+    createdAt: new Date(device.created_at),
+    updatedAt: new Date(device.updated_at),
+    deletedAt: device.deleted_at ? new Date(device.deleted_at) : null,
   }
 }
 
