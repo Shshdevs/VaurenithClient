@@ -1,6 +1,7 @@
-import { Button, Text, Title, type ButtonProps } from '@mantine/core'
+import { Text, Title, type ButtonProps } from '@mantine/core'
 import type { CSSProperties } from 'react'
 import type { LucideIcon } from 'lucide-react'
+import { AppButton } from '@/presentation/components/AppButton'
 import css from './index.module.scss'
 
 const fragments = import.meta.glob<string>('@assets/empty-states/*.png', {
@@ -27,7 +28,7 @@ type EmptyStateProps = {
   className?: string
 }
 
-export function EmptyState({ fragmentName, title, description, actions = [], className }: EmptyStateProps) {
+export function EmptyState({ fragmentName, title, description, actions = [], size = 560, className }: EmptyStateProps) {
   const fileName = fragmentName ? (fragmentName.endsWith('.png') ? fragmentName : `${fragmentName}.png`) : undefined
   const fragmentImage = fileName
     ? Object.entries(fragments).find(([path]) => path.endsWith(`/${fileName}`))?.[1]
@@ -36,7 +37,7 @@ export function EmptyState({ fragmentName, title, description, actions = [], cla
   return (
     <section
       className={[css.emptyState, className].filter(Boolean).join(' ')}
-      style={{ '--empty-state-size': `560px` } as CSSProperties}
+      style={{ '--empty-state-size': `${size}px` } as CSSProperties}
     >
       <div className={css.illustration}>
         {cellImage && <img className={css.cell} src={cellImage} alt="" />}
@@ -55,14 +56,15 @@ export function EmptyState({ fragmentName, title, description, actions = [], cla
       {actions.length > 0 && (
         <div className={css.actions}>
           {actions.map(({ label, icon: Icon, onClick, variant = 'filled' }, index) => (
-            <Button
+            <AppButton
               key={`${label}-${index}`}
               leftSection={Icon ? <Icon size={18} /> : null}
               onClick={onClick}
+              radius="lg"
               variant={variant}
             >
               {label}
-            </Button>
+            </AppButton>
           ))}
         </div>
       )}

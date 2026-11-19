@@ -19,6 +19,28 @@
     "title": "Main",
     "welcome": "Welcome, {{nickname}}"
   },
+  "projects": {
+    "title": "Projects",
+    "loading": "Loading projects",
+    "loadError": "Could not load projects",
+    "loadErrorDescription": "Check your connection and try again.",
+    "retry": "Retry",
+    "noProjectsTitle": "No projects yet",
+    "noProjectsDescription": "Create your first project to bring together repositories, devices, containers and services.",
+    "createFirstProject": "Create first project",
+    "noDescription": "No description provided",
+    "updatedAt": "Updated {{date}}",
+    "types": {
+      "software": "Software",
+      "infrastructure": "Infrastructure",
+      "fullstack": "Full stack",
+      "other": "Other"
+    },
+    "statuses": {
+      "active": "Active",
+      "archived": "Archived"
+    }
+  },
   "registration": {
     "title": "Welcome",
     "quote": "A Unified Workspace for Managing Projects, Code, and Infrastructure.",
@@ -30,6 +52,7 @@
   "identity": {
     "sessionCheckError": "Unable to check the session",
     "sessionCheckErrorDescription": "Check your connection to the server and try again.",
+    "sessionLoading": "Checking session",
     "retry": "Retry"
   },
   "notFound": {

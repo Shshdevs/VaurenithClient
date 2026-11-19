@@ -1,8 +1,10 @@
-import { Alert, Button, Center, Loader, Stack, Text } from '@mantine/core'
+import { Alert, Center, Stack, Text } from '@mantine/core'
 import { useTranslation } from 'react-i18next'
 import type { ReactNode } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useIdentitySessionStatus } from '@/presentation/hooks/app/backend/session/useIdentitySessionStatus'
+import { AppButton } from '@/presentation/components/AppButton'
+import { PageLoader } from '@/presentation/components/PageLoader'
 
 function getLocalePath(pathname: string) {
   const locale = pathname.split('/')[1]
@@ -23,11 +25,7 @@ export function IdentitySessionGate({ children }: { children: ReactNode }) {
   const isIdentityFlowPage = isIdentityFlowPath(pathname)
 
   if (status === 'checking') {
-    return (
-      <Center mih="100vh">
-        <Loader />
-      </Center>
-    )
+    return <PageLoader label={t('identity.sessionLoading')} minHeight="100dvh" />
   }
 
   if (status === 'error') {
@@ -36,7 +34,7 @@ export function IdentitySessionGate({ children }: { children: ReactNode }) {
         <Alert color="red" title={t('identity.sessionCheckError')}>
           <Stack gap="sm">
             <Text>{t('identity.sessionCheckErrorDescription')}</Text>
-            <Button onClick={retry}>{t('identity.retry')}</Button>
+            <AppButton onClick={retry}>{t('identity.retry')}</AppButton>
           </Stack>
         </Alert>
       </Center>
