@@ -4,10 +4,10 @@ export const APP_NAV_SECTIONS = [
   {
     title: 'navigation.main',
     navLinks: [
-      { icon: Home, labelKey: 'navigation.home' },
-      { icon: LayoutDashboard, labelKey: 'navigation.projects' },
-      { icon: ContainerIcon, labelKey: 'navigation.containers' },
-      { icon: DatabaseIcon, labelKey: 'navigation.devices' },
+      { icon: Home, labelKey: 'navigation.home', to: '/' },
+      { icon: LayoutDashboard, labelKey: 'navigation.projects', to: '/projects' },
+      { icon: ContainerIcon, labelKey: 'navigation.containers', to: '/containers' },
+      { icon: DatabaseIcon, labelKey: 'navigation.devices', to: '/devices' },
     ],
   },
   {

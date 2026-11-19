@@ -6,6 +6,7 @@ import { HomePage } from '@/presentation/pages/HomePage'
 import { NotFoundPage } from '@/presentation/pages/NotFoundPage'
 import { AuthPage } from '@/presentation/pages/identity/AuthPage'
 import { IdentitySessionGate } from './IdentitySessionGate'
+import { ProjectsPage } from '@/presentation/pages/ProjectsPage'
 
 type SupportedLocale = 'en' | 'ru'
 
@@ -25,6 +26,7 @@ export function AppRouter() {
       <Routes>
         <Route element={<Layout navSections={APP_NAV_SECTIONS} />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/:locale" element={<LocalizedPage page={HomePage} />} />
         </Route>
         <Route path="/identity/create-user" element={<AuthPage />} />
