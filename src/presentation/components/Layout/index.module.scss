@@ -87,13 +87,29 @@ $navbar-content-offset: 6px;
 
 .navBar {
   margin-block: var(--mantine-spacing-lg);
-  padding: 5px 0;
 
   .navLinksRef {
+    position: relative;
+    isolation: isolate;
     display: flex;
     flex-direction: column;
     gap: var(--mantine-spacing-lg);
   }
+}
+
+.navIndicator {
+  z-index: 0;
+  border-radius: 12px;
+  background-color: var(--app-background-color);
+  background-image: var(--app-background-image);
+  background-attachment: fixed;
+  pointer-events: none;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.navSection {
+  position: relative;
+  z-index: 1;
 }
 
 .navSectionTitle {
@@ -119,20 +135,21 @@ $navbar-content-offset: 6px;
 
 .navLink {
   box-sizing: border-box;
+  position: relative;
   width: 100%;
   min-height: $navbar-link-min-height;
   padding-block: $navbar-link-padding-block;
   padding-inline: $navbar-link-padding-inline;
   border-radius: 12px;
+  background-color: transparent;
 
   &.navLink:hover,
   &.navLink[data-active] {
-    background-color: var(--mantine-primary-color-light);
+    background-color: transparent;
     color: var(--mantine-primary-color-light-color);
   }
 
   &.navLink:hover {
-    background-color: var(--mantine-primary-color-light-hover);
     cursor: pointer;
   }
 }
