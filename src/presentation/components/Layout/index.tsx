@@ -3,41 +3,11 @@ import { useAppShellResize } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { LucideIcon } from 'lucide-react'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { BrandLogo } from '@/presentation/components/BrandLogo'
+import { INITIAL_RESIZE_SIZES, NAVBAR_MAX_WIDTH, NAVBAR_MIN_WIDTH, NAVBAR_TRANSITION_DURATION } from './consts'
+import type { LayoutProps, NavbarNavLinkProps } from './types'
 import css from './index.module.scss'
-
-const NAVBAR_MIN_WIDTH = 86
-const NAVBAR_MAX_WIDTH = 300
-const NAVBAR_TRANSITION_DURATION = 420
-const INITIAL_RESIZE_SIZES = { navbar: NAVBAR_MAX_WIDTH }
-
-type NavbarLink = {
-  icon: LucideIcon
-  labelKey: string
-  to?: string
-}
-
-type NavbarSection = {
-  title: string
-  navLinks: readonly NavbarLink[]
-}
-
-type LayoutProps = {
-  navSections: readonly NavbarSection[]
-}
-
-type NavbarNavLinkProps = {
-  navLink: NavbarLink
-  label: string
-  isCollapsed: boolean
-  isActive: boolean
-  onActiveElementChange: (element: HTMLAnchorElement | null) => void
-  onHover: (element: HTMLElement) => void
-  onHoverEnd: () => void
-  onNavigate: () => void
-}
 
 function normalizePathname(pathname: string) {
   return pathname.replace(/^\/(?:en|ru)(?=\/|$)/, '') || '/'

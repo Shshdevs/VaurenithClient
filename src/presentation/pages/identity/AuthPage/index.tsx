@@ -8,9 +8,8 @@ import { usePlatform } from '@/presentation/hooks/app/platform/usePlatform'
 import { BrandLogo } from '@/presentation/components/BrandLogo'
 import { AppButton } from '@/presentation/components/AppButton'
 import { completeIdentityFlow } from './identityFlow'
+import { NICKNAME_STORAGE_KEY } from '@/presentation/app/identity/consts'
 import css from './index.module.scss'
-
-const NICKNAME_KEY = 'vaurenith.nickname'
 
 export function AuthPage() {
   const { t } = useTranslation('presentation')
@@ -28,7 +27,7 @@ export function AuthPage() {
     void completeIdentityFlow({ identityApi, identityAuth, platform })
       .then((nickname) => {
         if (!nickname) return
-        localStorage.setItem(NICKNAME_KEY, nickname)
+        localStorage.setItem(NICKNAME_STORAGE_KEY, nickname)
         window.location.reload()
       })
       .catch((cause: unknown) => setError(getAuthorizationError(cause, t)))

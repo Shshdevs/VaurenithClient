@@ -1,37 +1,14 @@
-import { Text, Title, type ButtonProps } from '@mantine/core'
+import { Text, Title } from '@mantine/core'
 import type { CSSProperties } from 'react'
-import type { LucideIcon } from 'lucide-react'
 import { AppButton } from '@/presentation/components/AppButton'
+import { EMPTY_STATE_CELL_IMAGE, EMPTY_STATE_FRAGMENTS } from './consts'
+import type { EmptyStateProps } from './types'
 import css from './index.module.scss'
-
-const fragments = import.meta.glob<string>('@assets/empty-states/*.png', {
-  eager: true,
-  import: 'default',
-  query: '?url',
-})
-
-const cellImage = Object.entries(fragments).find(([path]) => path.endsWith('/Cell.png'))?.[1]
-
-type EmptyStateAction = {
-  label: string
-  icon?: LucideIcon
-  onClick: () => void
-  variant?: ButtonProps['variant']
-}
-
-type EmptyStateProps = {
-  fragmentName?: string
-  title?: string
-  description?: string
-  actions?: EmptyStateAction[]
-  size?: number
-  className?: string
-}
 
 export function EmptyState({ fragmentName, title, description, actions = [], size = 560, className }: EmptyStateProps) {
   const fileName = fragmentName ? (fragmentName.endsWith('.png') ? fragmentName : `${fragmentName}.png`) : undefined
   const fragmentImage = fileName
-    ? Object.entries(fragments).find(([path]) => path.endsWith(`/${fileName}`))?.[1]
+    ? EMPTY_STATE_FRAGMENTS.find(({ path }) => path.endsWith(`/${fileName}`))?.src
     : undefined
 
   return (
@@ -40,7 +17,7 @@ export function EmptyState({ fragmentName, title, description, actions = [], siz
       style={{ '--empty-state-size': `${size}px` } as CSSProperties}
     >
       <div className={css.illustration}>
-        {cellImage && <img className={css.cell} src={cellImage} alt="" />}
+        {EMPTY_STATE_CELL_IMAGE && <img className={css.cell} src={EMPTY_STATE_CELL_IMAGE} alt="" />}
         {fragmentImage && <img className={css.fragment} src={fragmentImage} alt="" />}
       </div>
       {title && (
