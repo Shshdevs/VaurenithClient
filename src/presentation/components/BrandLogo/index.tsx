@@ -1,14 +1,8 @@
 import { Text, useComputedColorScheme } from '@mantine/core'
+import type { BrandLogoProps } from './types'
 import css from './index.module.scss'
 import combinedLogo from '@assets/branding/CombineLogo.svg'
 import iconLogo from '@assets/branding/IconLogo.svg'
-
-type BrandLogoProps = {
-  compact?: boolean
-  header?: boolean
-  large?: boolean
-  className?: string
-}
 
 export function BrandLogo({ compact = false, header = false, large = false, className }: BrandLogoProps) {
   const colorScheme = useComputedColorScheme('light')

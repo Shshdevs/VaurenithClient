@@ -1,9 +1,5 @@
 import { Center, Loader } from '@mantine/core'
-
-type PageLoaderProps = {
-  label: string
-  minHeight?: number | string
-}
+import type { PageLoaderProps } from './types'
 
 export function PageLoader({ label, minHeight = 240 }: PageLoaderProps) {
   return (
