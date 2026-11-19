@@ -12,11 +12,14 @@ import { KeycloakOidcClient } from '@/infrastructure/identity/KeycloakOidcClient
 import { ApiIdentitySession } from '@/infrastructure/session/ApiIdentitySession'
 import { LocalAccessTokenStore } from '@/infrastructure/session/LocalAccessTokenStore'
 import { createPlatformAdapter } from '@/app/platform/createPlatformAdapter'
+import type { DevicesApi } from '@/application/ports/infrastructure/DevicesApi'
+import { DevicesApiClient } from '@/infrastructure/api/infrastructure/DevicesApiClient'
 
 export type BackendDependencies = {
   identityApi: IdentityApi
   sessionApi: SessionApi
   projectsApi: ProjectsApi
+  devicesApi: DevicesApi
   identitySession: IdentitySession
 }
 
@@ -36,6 +39,7 @@ export function createAppDependencies(): AppDependencies {
   const identityApi = new IdentityApiClient(apiClient)
   const sessionApi = new SessionApiClient(apiClient)
   const projectsApi = new ProjectsApiClient(apiClient)
+  const devicesApi = new DevicesApiClient(apiClient)
   const identityAuth = new KeycloakOidcClient(
     import.meta.env.VITE_OIDC_AUTHORITY ?? '',
     import.meta.env.VITE_OIDC_CLIENT_ID ?? '',
@@ -46,6 +50,6 @@ export function createAppDependencies(): AppDependencies {
   return {
     platform,
     identityAuth,
-    backend: { identityApi, sessionApi, projectsApi, identitySession },
+    backend: { identityApi, sessionApi, projectsApi, devicesApi, identitySession },
   }
 }
