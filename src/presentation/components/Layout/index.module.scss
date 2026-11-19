@@ -199,3 +199,36 @@ $navbar-content-offset: 6px;
     transform $navbar-text-duration ease,
     visibility 0s linear $navbar-text-duration;
 }
+
+@media (width <= 48em) {
+  .navbar {
+    padding-block: var(--mantine-spacing-sm);
+  }
+
+  .navbarSection {
+    display: flex;
+    height: 48px;
+    flex: 0 0 48px;
+    align-items: center;
+  }
+
+  .navbarText {
+    font-size: var(--mantine-font-size-sm);
+    white-space: nowrap;
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+  }
+
+  .navBar {
+    margin-block: var(--mantine-spacing-sm);
+  }
+
+  .navSectionTitle {
+    font-size: var(--mantine-font-size-md);
+  }
+
+  .navLink {
+    min-height: 48px;
+    padding-block: 8px;
+  }
+}

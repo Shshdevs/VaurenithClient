@@ -36,6 +36,7 @@ type NavbarNavLinkProps = {
   onActiveElementChange: (element: HTMLAnchorElement | null) => void
   onHover: (element: HTMLElement) => void
   onHoverEnd: () => void
+  onNavigate: () => void
 }
 
 function normalizePathname(pathname: string) {
@@ -56,6 +57,7 @@ function NavbarNavLink({
   onActiveElementChange,
   onHover,
   onHoverEnd,
+  onNavigate,
 }: NavbarNavLinkProps) {
   const setElement = useCallback(
     (element: HTMLAnchorElement | null) => {
@@ -92,16 +94,16 @@ function NavbarNavLink({
   }
 
   return navLink.to ? (
-    <NavLink component={Link} to={navLink.to} {...navLinkProps} />
+    <NavLink component={Link} to={navLink.to} onClick={onNavigate} {...navLinkProps} />
   ) : (
-    <NavLink href="#" onClick={(event) => event.preventDefault()} {...navLinkProps} />
+    <NavLink href="#" {...navLinkProps} onClick={(event) => event.preventDefault()} />
   )
 }
 
 export function Layout({ navSections }: LayoutProps) {
   const { t } = useTranslation('presentation')
   const { pathname } = useLocation()
-  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
+  const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] = useDisclosure()
   const [expandedWidth, setExpandedWidth] = useState(NAVBAR_MAX_WIDTH)
   const [currentWidth, setCurrentWidth] = useState(NAVBAR_MAX_WIDTH)
   const [isNavbarAnimating, setIsNavbarAnimating] = useState(false)
@@ -172,7 +174,7 @@ export function Layout({ navSections }: LayoutProps) {
     <AppShell
       className={css.layout}
       data-navbar-animating={isNavbarAnimating || undefined}
-      header={{ height: 60 }}
+      header={{ height: { base: 48, sm: 60 } }}
       transitionDuration={NAVBAR_TRANSITION_DURATION}
       transitionTimingFunction="cubic-bezier(0.22, 1, 0.36, 1)"
       navbar={{
@@ -253,6 +255,7 @@ export function Layout({ navSections }: LayoutProps) {
                         onActiveElementChange={setActiveNavLinkElement}
                         onHover={setHoveredNavLink}
                         onHoverEnd={() => setHoveredNavLink(null)}
+                        onNavigate={closeMobile}
                       />
                     )
                   })}
