@@ -4,7 +4,7 @@ import { useDisclosure } from '@mantine/hooks'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { LucideIcon } from 'lucide-react'
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { BrandLogo } from '@/presentation/components/BrandLogo'
 import css from './index.module.scss'
 
@@ -16,6 +16,7 @@ const INITIAL_RESIZE_SIZES = { navbar: NAVBAR_MAX_WIDTH }
 type NavbarLink = {
   icon: LucideIcon
   labelKey: string
+  to?: string
 }
 
 type NavbarSection = {
@@ -161,28 +162,28 @@ export function Layout({ navSections }: LayoutProps) {
                       </span>
                     )
 
-                    return (
-                      <NavLink
-                        href="#"
-                        key={navLink.labelKey}
-                        onClick={(event) => event.preventDefault()}
-                        leftSection={
-                          isCollapsed ? (
-                            <Tooltip label={label} position="right">
-                              {icon}
-                            </Tooltip>
-                          ) : (
-                            icon
-                          )
-                        }
-                        label={label}
-                        classNames={{
-                          root: css.navLink,
-                          section: css.navLinkSection,
-                          body: css.navLinkBody,
-                          label: `${css.navLinkLabel} ${isCollapsed ? css.navLinkLabelCollapsed : ''}`,
-                        }}
-                      />
+                    const navLinkProps = {
+                      key: navLink.labelKey,
+                      leftSection: isCollapsed ? (
+                        <Tooltip label={label} position="right">
+                          {icon}
+                        </Tooltip>
+                      ) : (
+                        icon
+                      ),
+                      label,
+                      classNames: {
+                        root: css.navLink,
+                        section: css.navLinkSection,
+                        body: css.navLinkBody,
+                        label: `${css.navLinkLabel} ${isCollapsed ? css.navLinkLabelCollapsed : ''}`,
+                      },
+                    }
+
+                    return navLink.to ? (
+                      <NavLink component={Link} to={navLink.to} {...navLinkProps} />
+                    ) : (
+                      <NavLink href="#" onClick={(event) => event.preventDefault()} {...navLinkProps} />
                     )
                   })}
                 </div>
