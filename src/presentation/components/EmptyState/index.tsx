@@ -59,6 +59,7 @@ export function EmptyState({ fragmentName, title, description, actions = [], cla
               key={`${label}-${index}`}
               leftSection={Icon ? <Icon size={18} /> : null}
               onClick={onClick}
+              radius="md"
               variant={variant}
             >
               {label}
