@@ -1,23 +1,45 @@
-import { Text, Title } from '@mantine/core'
+import { Button, Text, Title, type ButtonProps } from '@mantine/core'
 import type { CSSProperties } from 'react'
-import { AppButton } from '@/presentation/components/AppButton'
-import { EMPTY_STATE_CELL_IMAGE, EMPTY_STATE_FRAGMENTS } from './consts'
-import type { EmptyStateProps } from './types'
+import type { LucideIcon } from 'lucide-react'
 import css from './index.module.scss'
 
-export function EmptyState({ fragmentName, title, description, actions = [], size = 560, className }: EmptyStateProps) {
+const fragments = import.meta.glob<string>('@assets/empty-states/*.png', {
+  eager: true,
+  import: 'default',
+  query: '?url',
+})
+
+const cellImage = Object.entries(fragments).find(([path]) => path.endsWith('/Cell.png'))?.[1]
+
+type EmptyStateAction = {
+  label: string
+  icon?: LucideIcon
+  onClick: () => void
+  variant?: ButtonProps['variant']
+}
+
+type EmptyStateProps = {
+  fragmentName?: string
+  title?: string
+  description?: string
+  actions?: EmptyStateAction[]
+  size?: number
+  className?: string
+}
+
+export function EmptyState({ fragmentName, title, description, actions = [], className }: EmptyStateProps) {
   const fileName = fragmentName ? (fragmentName.endsWith('.png') ? fragmentName : `${fragmentName}.png`) : undefined
   const fragmentImage = fileName
-    ? EMPTY_STATE_FRAGMENTS.find(({ path }) => path.endsWith(`/${fileName}`))?.src
+    ? Object.entries(fragments).find(([path]) => path.endsWith(`/${fileName}`))?.[1]
     : undefined
 
   return (
     <section
       className={[css.emptyState, className].filter(Boolean).join(' ')}
-      style={{ '--empty-state-size': `${size}px` } as CSSProperties}
+      style={{ '--empty-state-size': `560px` } as CSSProperties}
     >
       <div className={css.illustration}>
-        {EMPTY_STATE_CELL_IMAGE && <img className={css.cell} src={EMPTY_STATE_CELL_IMAGE} alt="" />}
+        {cellImage && <img className={css.cell} src={cellImage} alt="" />}
         {fragmentImage && <img className={css.fragment} src={fragmentImage} alt="" />}
       </div>
       {title && (
@@ -33,15 +55,15 @@ export function EmptyState({ fragmentName, title, description, actions = [], siz
       {actions.length > 0 && (
         <div className={css.actions}>
           {actions.map(({ label, icon: Icon, onClick, variant = 'filled' }, index) => (
-            <AppButton
+            <Button
               key={`${label}-${index}`}
               leftSection={Icon ? <Icon size={18} /> : null}
               onClick={onClick}
-              radius="lg"
+              radius="md"
               variant={variant}
             >
               {label}
-            </AppButton>
+            </Button>
           ))}
         </div>
       )}
