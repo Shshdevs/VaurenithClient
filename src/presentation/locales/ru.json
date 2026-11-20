@@ -19,6 +19,27 @@
     "title": "Главная",
     "welcome": "Добро пожаловать, {{nickname}}"
   },
+  "projects": {
+    "title": "Проекты",
+    "loading": "Загрузка проектов",
+    "loadError": "Не удалось загрузить проекты",
+    "loadErrorDescription": "Проверьте подключение и попробуйте ещё раз.",
+    "retry": "Повторить",
+    "noProjectsTitle": "Пока нет проектов",
+    "noProjectsDescription": "Создайте первый проект, чтобы объединить репозитории, устройства, контейнеры и сервисы.",
+    "noDescription": "Описание не добавлено",
+    "updatedAt": "Обновлён {{date}}",
+    "types": {
+      "software": "Разработка ПО",
+      "infrastructure": "Инфраструктура",
+      "fullstack": "Полный стек",
+      "other": "Другое"
+    },
+    "statuses": {
+      "active": "Активный",
+      "archived": "В архиве"
+    }
+  },
   "registration": {
     "title": "Добро пожаловать",
     "quote": "Единая среда управления проектами, кодом и инфраструктурой",
@@ -30,6 +51,7 @@
   "identity": {
     "sessionCheckError": "Не удалось проверить сессию",
     "sessionCheckErrorDescription": "Проверьте подключение к серверу и повторите попытку.",
+    "sessionLoading": "Проверка сессии",
     "retry": "Повторить"
   },
   "notFound": {

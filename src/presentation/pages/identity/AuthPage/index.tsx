@@ -1,4 +1,4 @@
-import { Alert, Button, Container, Paper, Stack, Title, Text } from '@mantine/core'
+import { Alert, Container, Paper, Stack, Title, Text } from '@mantine/core'
 import type { TFunction } from 'i18next'
 import { useTranslation } from 'react-i18next'
 import { useEffect, useRef, useState } from 'react'
@@ -6,10 +6,10 @@ import { useIdentityApi } from '@/presentation/hooks/app/backend/identity/useIde
 import { useIdentityAuth } from '@/presentation/hooks/app/identity/useIdentityAuth'
 import { usePlatform } from '@/presentation/hooks/app/platform/usePlatform'
 import { BrandLogo } from '@/presentation/components/BrandLogo'
+import { AppButton } from '@/presentation/components/AppButton'
 import { completeIdentityFlow } from './identityFlow'
+import { NICKNAME_STORAGE_KEY } from '@/presentation/app/identity/consts'
 import css from './index.module.scss'
-
-const NICKNAME_KEY = 'vaurenith.nickname'
 
 export function AuthPage() {
   const { t } = useTranslation('presentation')
@@ -27,7 +27,7 @@ export function AuthPage() {
     void completeIdentityFlow({ identityApi, identityAuth, platform })
       .then((nickname) => {
         if (!nickname) return
-        localStorage.setItem(NICKNAME_KEY, nickname)
+        localStorage.setItem(NICKNAME_STORAGE_KEY, nickname)
         window.location.reload()
       })
       .catch((cause: unknown) => setError(getAuthorizationError(cause, t)))
@@ -58,15 +58,15 @@ export function AuthPage() {
             </Text>
             <Stack className={css.actions}>
               {error && <Alert color="red">{error}</Alert>}
-              <Button
+              <AppButton
                 className={css.actionButton}
                 fullWidth
                 disabled={isSubmitting}
                 onClick={() => void authorize('register')}
               >
                 {t('registration.createAccount')}
-              </Button>
-              <Button
+              </AppButton>
+              <AppButton
                 className={css.actionButton}
                 fullWidth
                 variant="default"
@@ -74,7 +74,7 @@ export function AuthPage() {
                 onClick={() => void authorize('login')}
               >
                 {t('registration.signIn')}
-              </Button>
+              </AppButton>
             </Stack>
           </Container>
         </Paper>

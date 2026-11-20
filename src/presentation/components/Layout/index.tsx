@@ -1,40 +1,92 @@
-import { AppShell, Burger, Group, NavLink, ScrollArea, Tooltip, Title } from '@mantine/core'
+import { AppShell, Burger, FloatingIndicator, Group, NavLink, ScrollArea, Tooltip, Title } from '@mantine/core'
 import { useAppShellResize } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { LucideIcon } from 'lucide-react'
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import { BrandLogo } from '@/presentation/components/BrandLogo'
+import { INITIAL_RESIZE_SIZES, NAVBAR_MAX_WIDTH, NAVBAR_MIN_WIDTH, NAVBAR_TRANSITION_DURATION } from './consts'
+import type { LayoutProps, NavbarNavLinkProps } from './types'
 import css from './index.module.scss'
 
-const NAVBAR_MIN_WIDTH = 86
-const NAVBAR_MAX_WIDTH = 300
-const NAVBAR_TRANSITION_DURATION = 420
-const INITIAL_RESIZE_SIZES = { navbar: NAVBAR_MAX_WIDTH }
-
-type NavbarLink = {
-  icon: LucideIcon
-  labelKey: string
+function normalizePathname(pathname: string) {
+  return pathname.replace(/^\/(?:en|ru)(?=\/|$)/, '') || '/'
 }
 
-type NavbarSection = {
-  title: string
-  navLinks: readonly NavbarLink[]
+function isRouteActive(pathname: string, to: string) {
+  const normalizedPathname = normalizePathname(pathname)
+
+  return to === '/' ? normalizedPathname === '/' : normalizedPathname === to || normalizedPathname.startsWith(`${to}/`)
 }
 
-type LayoutProps = {
-  navSections: readonly NavbarSection[]
+function NavbarNavLink({
+  navLink,
+  label,
+  isCollapsed,
+  isActive,
+  onActiveElementChange,
+  onHover,
+  onHoverEnd,
+  onNavigate,
+}: NavbarNavLinkProps) {
+  const setElement = useCallback(
+    (element: HTMLAnchorElement | null) => {
+      if (isActive) onActiveElementChange(element)
+    },
+    [isActive, onActiveElementChange]
+  )
+  const Icon = navLink.icon
+  const icon = (
+    <span className={css.navLinkIcon}>
+      <Icon />
+    </span>
+  )
+  const navLinkProps = {
+    ref: setElement,
+    leftSection: isCollapsed ? (
+      <Tooltip label={label} position="right">
+        {icon}
+      </Tooltip>
+    ) : (
+      icon
+    ),
+    label,
+    active: isActive,
+    'aria-current': isActive ? ('page' as const) : undefined,
+    onMouseEnter: (event: { currentTarget: HTMLElement }) => onHover(event.currentTarget),
+    onMouseLeave: onHoverEnd,
+    classNames: {
+      root: css.navLink,
+      section: css.navLinkSection,
+      body: css.navLinkBody,
+      label: `${css.navLinkLabel} ${isCollapsed ? css.navLinkLabelCollapsed : ''}`,
+    },
+  }
+
+  return navLink.to ? (
+    <NavLink component={Link} to={navLink.to} onClick={onNavigate} {...navLinkProps} />
+  ) : (
+    <NavLink href="#" {...navLinkProps} onClick={(event) => event.preventDefault()} />
+  )
 }
 
 export function Layout({ navSections }: LayoutProps) {
   const { t } = useTranslation('presentation')
-  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
+  const { pathname } = useLocation()
+  const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] = useDisclosure()
   const [expandedWidth, setExpandedWidth] = useState(NAVBAR_MAX_WIDTH)
   const [currentWidth, setCurrentWidth] = useState(NAVBAR_MAX_WIDTH)
   const [isNavbarAnimating, setIsNavbarAnimating] = useState(false)
+  const [hoveredNavLink, setHoveredNavLink] = useState<HTMLElement | null>(null)
+  const [activeNavLinkElement, setActiveNavLinkElement] = useState<HTMLAnchorElement | null>(null)
+  const [navLinksElement, setNavLinksElement] = useState<HTMLDivElement | null>(null)
   const navLinksRef = useRef<HTMLDivElement>(null)
+  const setNavLinksRef = useCallback((element: HTMLDivElement | null) => {
+    navLinksRef.current = element
+    setNavLinksElement(element)
+  }, [])
   const isCollapsed = currentWidth < NAVBAR_MIN_WIDTH + 1
+  const indicatorTarget = hoveredNavLink ?? activeNavLinkElement
   const resize = useAppShellResize({
     navbar: {
       min: NAVBAR_MIN_WIDTH,
@@ -92,7 +144,7 @@ export function Layout({ navSections }: LayoutProps) {
     <AppShell
       className={css.layout}
       data-navbar-animating={isNavbarAnimating || undefined}
-      header={{ height: 60 }}
+      header={{ height: { base: 48, sm: 60 } }}
       transitionDuration={NAVBAR_TRANSITION_DURATION}
       transitionTimingFunction="cubic-bezier(0.22, 1, 0.36, 1)"
       navbar={{
@@ -141,47 +193,39 @@ export function Layout({ navSections }: LayoutProps) {
         </AppShell.Section>
 
         <AppShell.Section grow component={ScrollArea} scrollbars="y" className={css.navBar}>
-          <div ref={navLinksRef} className={css.navLinksRef}>
+          <div ref={setNavLinksRef} className={css.navLinksRef}>
+            <FloatingIndicator
+              className={css.navIndicator}
+              target={indicatorTarget}
+              parent={navLinksElement}
+              transitionDuration={260}
+              aria-hidden="true"
+            />
             {navSections.map((navSection) => {
               return (
                 <div className={css.navSection} key={navSection.title}>
                   <Title
                     size="lg"
+                    mb={5}
                     className={`${css.navSectionTitle} ${isCollapsed ? css.navSectionTitleCollapsed : ''}`}
                   >
                     {t(navSection.title as never)}
                   </Title>
 
                   {navSection.navLinks.map((navLink) => {
-                    const Icon = navLink.icon
                     const label = t(navLink.labelKey as never)
-                    const icon = (
-                      <span className={css.navLinkIcon}>
-                        <Icon />
-                      </span>
-                    )
-
+                    const isActive = navLink.to ? isRouteActive(pathname, navLink.to) : false
                     return (
-                      <NavLink
-                        href="#"
+                      <NavbarNavLink
                         key={navLink.labelKey}
-                        onClick={(event) => event.preventDefault()}
-                        leftSection={
-                          isCollapsed ? (
-                            <Tooltip label={label} position="right">
-                              {icon}
-                            </Tooltip>
-                          ) : (
-                            icon
-                          )
-                        }
+                        navLink={navLink}
                         label={label}
-                        classNames={{
-                          root: css.navLink,
-                          section: css.navLinkSection,
-                          body: css.navLinkBody,
-                          label: `${css.navLinkLabel} ${isCollapsed ? css.navLinkLabelCollapsed : ''}`,
-                        }}
+                        isCollapsed={isCollapsed}
+                        isActive={isActive}
+                        onActiveElementChange={setActiveNavLinkElement}
+                        onHover={setHoveredNavLink}
+                        onHoverEnd={() => setHoveredNavLink(null)}
+                        onNavigate={closeMobile}
                       />
                     )
                   })}

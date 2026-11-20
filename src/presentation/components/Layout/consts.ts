@@ -1,0 +1,4 @@
+export const NAVBAR_MIN_WIDTH = 86
+export const NAVBAR_MAX_WIDTH = 300
+export const NAVBAR_TRANSITION_DURATION = 420
+export const INITIAL_RESIZE_SIZES = { navbar: NAVBAR_MAX_WIDTH }
