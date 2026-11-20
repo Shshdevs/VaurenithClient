@@ -1,5 +1,6 @@
 import { Alert, Badge, Card, Container, Group, SimpleGrid, Stack, Text, Title } from '@mantine/core'
 import { useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import type { Project } from '@/domain/projects/Project'
 import { AppButton } from '@/presentation/components/AppButton'
@@ -12,6 +13,7 @@ import { formatDate } from '@/presentation/utils/date/formatDate'
 import { Plus } from 'lucide-react'
 
 export function ProjectsPage() {
+  const navigate = useNavigate()
   const { t, i18n } = useTranslation('presentation')
   const projectsApi = useProjectsApi()
   const identityAuth = useIdentityAuth()
@@ -58,7 +60,7 @@ export function ProjectsPage() {
           {
             label: t('projects.createFirstProject'),
             icon: Plus,
-            onClick: () => {},
+            onClick: () => navigate('/projects/new'),
           },
         ]}
       />
