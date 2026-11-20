@@ -55,6 +55,7 @@ export const DropdownField = (props: DropdownFieldValue) => {
       searchable={true}
       error={props.isError ? props.errorDescription : null}
       radius="md"
+      styles={{ input: { padding: '0.5rem 1.5rem' } }}
       data={props.options}
       size="md"
       clearable={!TrailingIcon}
