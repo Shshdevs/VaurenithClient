@@ -1,12 +1,14 @@
 import type { IdentityApi } from '@/application/ports/identity/IdentityApi'
 import type { IdentityAuth } from '@/application/ports/identity/IdentityAuth'
 import type { ProjectsApi } from '@/application/ports/projects/ProjectsApi'
+import type { EnvironmentsApi } from '@/application/ports/projects/EnvironmentsApi'
 import type { IdentitySession } from '@/application/ports/session/IdentitySession'
 import type { SessionApi } from '@/application/ports/session/SessionApi'
 import type { Platform } from '@/application/ports/Platform'
 import { FetchApiClient } from '@/infrastructure/api/FetchApiClient'
 import { IdentityApiClient } from '@/infrastructure/api/identity/IdentityApiClient'
 import { ProjectsApiClient } from '@/infrastructure/api/projects/ProjectsApiClient'
+import { EnvironmentsApiClient } from '@/infrastructure/api/projects/EnvironmentsApiClient'
 import { SessionApiClient } from '@/infrastructure/api/session/SessionApiClient'
 import { KeycloakOidcClient } from '@/infrastructure/identity/KeycloakOidcClient'
 import { ApiIdentitySession } from '@/infrastructure/session/ApiIdentitySession'
@@ -19,6 +21,7 @@ export type BackendDependencies = {
   identityApi: IdentityApi
   sessionApi: SessionApi
   projectsApi: ProjectsApi
+  environmentsApi: EnvironmentsApi
   devicesApi: DevicesApi
   identitySession: IdentitySession
 }
@@ -39,6 +42,7 @@ export function createAppDependencies(): AppDependencies {
   const identityApi = new IdentityApiClient(apiClient)
   const sessionApi = new SessionApiClient(apiClient)
   const projectsApi = new ProjectsApiClient(apiClient)
+  const environmentsApi = new EnvironmentsApiClient(apiClient)
   const devicesApi = new DevicesApiClient(apiClient)
   const identityAuth = new KeycloakOidcClient(
     import.meta.env.VITE_OIDC_AUTHORITY ?? '',
@@ -50,6 +54,6 @@ export function createAppDependencies(): AppDependencies {
   return {
     platform,
     identityAuth,
-    backend: { identityApi, sessionApi, projectsApi, devicesApi, identitySession },
+    backend: { identityApi, sessionApi, projectsApi, environmentsApi, devicesApi, identitySession },
   }
 }
