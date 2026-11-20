@@ -252,7 +252,7 @@ const theme: MantineThemeOverride = {
     lg: '1.25rem',
     xl: '2rem',
   },
-  defaultRadius: 'xl',
+  defaultRadius: 'md',
   breakpoints: {
     xs: '36em',
     sm: '48em',
