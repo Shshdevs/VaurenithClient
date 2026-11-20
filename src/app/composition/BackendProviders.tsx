@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { IdentityApiProvider } from '@/presentation/app/backend/identity/IdentityApiProvider'
 import { ProjectsApiProvider } from '@/presentation/app/backend/projects/ProjectsApiProvider'
+import { EnvironmentsApiProvider } from '@/presentation/app/backend/projects/EnvironmentsApiProvider'
 import { DevicesApiProvider } from '@/presentation/app/backend/infrastructure/DevicesApiProvider'
 import { IdentitySessionProvider } from '@/presentation/app/backend/session/IdentitySessionProvider'
 import { SessionApiProvider } from '@/presentation/app/backend/session/SessionApiProvider'
@@ -16,9 +17,13 @@ export function BackendProviders({ dependencies, children }: BackendProvidersPro
     <IdentityApiProvider identityApi={dependencies.identityApi}>
       <SessionApiProvider sessionApi={dependencies.sessionApi}>
         <ProjectsApiProvider projectsApi={dependencies.projectsApi}>
-          <DevicesApiProvider devicesApi={dependencies.devicesApi}>
-            <IdentitySessionProvider identitySession={dependencies.identitySession}>{children}</IdentitySessionProvider>
-          </DevicesApiProvider>
+          <EnvironmentsApiProvider environmentsApi={dependencies.environmentsApi}>
+            <DevicesApiProvider devicesApi={dependencies.devicesApi}>
+              <IdentitySessionProvider identitySession={dependencies.identitySession}>
+                {children}
+              </IdentitySessionProvider>
+            </DevicesApiProvider>
+          </EnvironmentsApiProvider>
         </ProjectsApiProvider>
       </SessionApiProvider>
     </IdentityApiProvider>
