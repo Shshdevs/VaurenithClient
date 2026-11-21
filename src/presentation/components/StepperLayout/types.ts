@@ -6,6 +6,9 @@ export type Step = {
   info: string
   icon?: LucideIcon
   children: ReactNode
+  nextLabel?: string
+  isLoading?: boolean
+  onNext?: () => boolean | Promise<boolean>
 }
 
 export type StepperProps = {

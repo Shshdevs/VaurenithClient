@@ -21,6 +21,12 @@ export type TextFieldValue = {
 export type NumberFieldValue = {
   value: number | string
   onChange: (value: number | string) => void
+  min?: number
+  max?: number
+  step?: number
+  allowDecimal?: boolean
+  allowNegative?: boolean
+  clampBehavior?: 'strict' | 'blur' | 'none'
 } & FieldValue
 
 export type TextareaValue = {
@@ -32,6 +38,6 @@ export type TextareaValue = {
 
 export type DropdownFieldValue = {
   value: string
-  options: string[]
+  options: { value: string; label: string }[]
   onChange: (option: string) => void
 } & FieldValue

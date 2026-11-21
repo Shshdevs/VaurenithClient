@@ -6,12 +6,21 @@ import { AppButton } from '../AppButton'
 
 export const StepperLayout = ({ steps }: StepperProps) => {
   const [active, setActive] = useState(0)
-  const nextStep = () => setActive((current) => (current < steps.length ? current + 1 : current))
+  const nextStep = async () => {
+    const canAdvance = await steps[active]?.onNext?.()
+    if (canAdvance === false) return
+    setActive((current) => (current < steps.length ? current + 1 : current))
+  }
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current))
 
   return (
     <div className={css.container}>
-      <Stepper active={active} onStepClick={setActive} allowNextStepsSelect={false}>
+      <Stepper
+        active={active}
+        onStepClick={setActive}
+        allowNextStepsSelect={false}
+        classNames={{ stepIcon: css.stepIcon }}
+      >
         {steps.map((step) => {
           const Icon = step.icon
           return (
@@ -32,7 +41,9 @@ export const StepperLayout = ({ steps }: StepperProps) => {
         <AppButton variant="default" onClick={prevStep}>
           Back
         </AppButton>
-        <AppButton onClick={nextStep}>{active != steps.length ? <div>Next Step</div> : <div>Complete</div>}</AppButton>
+        <AppButton loading={steps[active]?.isLoading} onClick={nextStep}>
+          {steps[active]?.nextLabel ?? (active < steps.length ? 'Next Step' : 'Complete')}
+        </AppButton>
       </Group>
     </div>
   )

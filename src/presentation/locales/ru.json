@@ -27,6 +27,7 @@
     "retry": "Повторить",
     "noProjectsTitle": "Пока нет проектов",
     "noProjectsDescription": "Создайте первый проект, чтобы объединить репозитории, устройства, контейнеры и сервисы.",
+    "createFirstProject": "Создать первый проект",
     "noDescription": "Описание не добавлено",
     "updatedAt": "Обновлён {{date}}",
     "types": {
@@ -38,6 +39,40 @@
     "statuses": {
       "active": "Активный",
       "archived": "В архиве"
+    },
+    "forms": {
+      "nextStep": "Далее",
+      "createProject": "Создать проект",
+      "createErrorTitle": "Не удалось создать проект",
+      "createError": "При создании проекта произошла непредвиденная ошибка.",
+      "sessionExpired": "Сессия завершилась. Войдите снова и повторите попытку.",
+      "generalInfo": {
+        "title": "Общая информация",
+        "description": "Укажите сведения о проекте",
+        "projectName": "Название проекта",
+        "projectNamePlaceholder": "Введите название проекта",
+        "projectNameBlank": "Название проекта не может быть пустым",
+        "projectNameTooLong": "Слишком длинное название проекта",
+        "projectDescription": "Описание (необязательно)",
+        "projectDescriptionPlaceholder": "Опишите проект",
+        "projectType": "Тип проекта",
+        "projectTypePlaceholder": "Выберите тип проекта",
+        "version": "Версия",
+        "versionPlaceholder": "Укажите версию проекта",
+        "projectVersionBlank": "Версия проекта не может быть пустой",
+        "projectVersionInvalid": "Укажите положительное целое число"
+      },
+      "configuration": {
+        "title": "Конфигурация (необязательно)",
+        "description": "Укажите конфигурацию проекта",
+        "configurationTitle": "Конфигурация",
+        "configurationPlaceholder": "Введите конфигурацию проекта в формате JSON",
+        "configurationAdd": "Добавить конфигурацию (JSON)",
+        "invalidJSON": "Введите корректную конфигурацию в формате JSON",
+        "objectRequired": "Конфигурация должна быть JSON-объектом",
+        "configurationUpload": "Загрузить JSON",
+        "configurationJSONFormat": "Форматировать JSON"
+      }
     }
   },
   "registration": {
