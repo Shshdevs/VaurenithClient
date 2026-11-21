@@ -2,16 +2,33 @@
 
 $navbar-link-min-height: 56px;
 $navbar-link-padding-block: 12px;
-$navbar-link-padding-inline: 8px;
+$navbar-link-padding-inline: 15px;
 $navbar-text-duration: 160ms;
+$navbar-content-offset: 6px;
 
 .layout {
   min-height: 100vh;
+
+  &[data-navbar-animating] {
+    --app-shell-transition-duration: 420ms !important;
+  }
 }
 
 .headerGroup {
   height: 100%;
   padding-inline: var(--mantine-spacing-md);
+
+  .burger {
+    transition: transform $navbar-text-duration ease;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:active {
+      transform: scale(0.88);
+    }
+  }
 }
 
 .header {
@@ -23,10 +40,12 @@ $navbar-text-duration: 160ms;
 .navbar.navbar {
   background-color: var(--mantine-color-body);
   border-color: var(--mantine-color-default-border);
+  overflow: hidden;
   padding: var(--mantine-spacing-md) var(--mantine-spacing-sm);
   transition-property: width, transform, top, height;
   transition-duration: var(--app-shell-transition-duration);
   transition-timing-function: var(--app-shell-transition-timing-function);
+  will-change: width, transform;
 }
 
 .resizeHandle.resizeHandle {
@@ -37,7 +56,7 @@ $navbar-text-duration: 160ms;
   height: 88px;
   flex: 0 0 88px;
   overflow: hidden;
-  padding: var(--mantine-spacing-md);
+  padding-inline: $navbar-link-padding-inline;
 }
 
 .navbarText {
@@ -45,35 +64,93 @@ $navbar-text-duration: 160ms;
   overflow: hidden;
   overflow-wrap: anywhere;
   white-space: normal;
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity $navbar-text-duration ease,
+    transform $navbar-text-duration ease,
+    visibility 0s linear;
   -webkit-box-orient: vertical;
   line-clamp: 2;
   -webkit-line-clamp: 2;
 }
 
 .navbarTextCollapsed {
+  opacity: 0;
+  transform: translateX(-$navbar-content-offset);
   visibility: hidden;
+  transition:
+    opacity $navbar-text-duration ease,
+    transform $navbar-text-duration ease,
+    visibility 0s linear $navbar-text-duration;
 }
 
-.navLinks {
+.navBar {
   margin-block: var(--mantine-spacing-lg);
-  padding: 5px 0;
+
+  .navLinksRef {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    gap: var(--mantine-spacing-lg);
+  }
+}
+
+.navIndicator {
+  z-index: 0;
+  border-radius: 12px;
+  background-color: var(--app-background-color);
+  background-image: var(--app-background-image);
+  background-attachment: fixed;
+  pointer-events: none;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.navSection {
+  position: relative;
+  z-index: 1;
+}
+
+.navSectionTitle {
+  margin: 0;
+  padding-inline: $navbar-link-padding-inline;
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity $navbar-text-duration ease,
+    transform $navbar-text-duration ease,
+    visibility 0s linear;
+}
+
+.navSectionTitleCollapsed {
+  opacity: 0;
+  transform: translateX(-$navbar-content-offset);
+  visibility: hidden;
+  transition:
+    opacity $navbar-text-duration ease,
+    transform $navbar-text-duration ease,
+    visibility 0s linear $navbar-text-duration;
 }
 
 .navLink {
+  box-sizing: border-box;
+  position: relative;
   width: 100%;
   min-height: $navbar-link-min-height;
   padding-block: $navbar-link-padding-block;
-  padding-inline: 4px;
+  padding-inline: $navbar-link-padding-inline;
   border-radius: 12px;
+  background-color: transparent;
 
   &.navLink:hover,
   &.navLink[data-active] {
-    background-color: var(--mantine-primary-color-light);
+    background-color: transparent;
     color: var(--mantine-primary-color-light-color);
   }
 
   &.navLink:hover {
-    background-color: var(--mantine-primary-color-light-hover);
+    cursor: pointer;
   }
 }
 
@@ -106,5 +183,52 @@ $navbar-text-duration: 160ms;
   overflow: hidden;
   white-space: nowrap;
   opacity: 1;
-  transition: opacity $navbar-text-duration ease;
+  transform: translateX(0);
+  transition:
+    opacity $navbar-text-duration ease,
+    transform $navbar-text-duration ease,
+    visibility 0s linear;
+}
+
+.navLinkLabelCollapsed {
+  opacity: 0;
+  transform: translateX(-$navbar-content-offset);
+  visibility: hidden;
+  transition:
+    opacity $navbar-text-duration ease,
+    transform $navbar-text-duration ease,
+    visibility 0s linear $navbar-text-duration;
+}
+
+@media (width <= 48em) {
+  .navbar {
+    padding-block: var(--mantine-spacing-sm);
+  }
+
+  .navbarSection {
+    display: flex;
+    height: 48px;
+    flex: 0 0 48px;
+    align-items: center;
+  }
+
+  .navbarText {
+    font-size: var(--mantine-font-size-sm);
+    white-space: nowrap;
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+  }
+
+  .navBar {
+    margin-block: var(--mantine-spacing-sm);
+  }
+
+  .navSectionTitle {
+    font-size: var(--mantine-font-size-md);
+  }
+
+  .navLink {
+    min-height: 48px;
+    padding-block: 8px;
+  }
 }

@@ -34,6 +34,20 @@
   max-height: 52px;
 }
 
+.large .icon {
+  width: 56px;
+  height: 56px;
+}
+
+.large .name {
+  font-size: 1.5rem;
+}
+
+.large .combined {
+  width: min(100%, 320px);
+  max-height: 80px;
+}
+
 .name {
   overflow: hidden;
   color: var(--mantine-color-text);

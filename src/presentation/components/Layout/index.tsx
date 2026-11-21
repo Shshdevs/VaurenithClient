@@ -1,33 +1,92 @@
-import { AppShell, Burger, Group, NavLink, ScrollArea, Tooltip } from '@mantine/core'
+import { AppShell, Burger, FloatingIndicator, Group, NavLink, ScrollArea, Tooltip, Title } from '@mantine/core'
 import { useAppShellResize } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { LucideIcon } from 'lucide-react'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import { BrandLogo } from '@/presentation/components/BrandLogo'
+import { INITIAL_RESIZE_SIZES, NAVBAR_MAX_WIDTH, NAVBAR_MIN_WIDTH, NAVBAR_TRANSITION_DURATION } from './consts'
+import type { LayoutProps, NavbarNavLinkProps } from './types'
 import css from './index.module.scss'
 
-const NAVBAR_MIN_WIDTH = 86
-const NAVBAR_MAX_WIDTH = 300
-const INITIAL_RESIZE_SIZES = { navbar: NAVBAR_MAX_WIDTH }
-
-type NavbarLink = {
-  icon: LucideIcon
-  labelKey: 'navigation.home' | 'navigation.projects'
+function normalizePathname(pathname: string) {
+  return pathname.replace(/^\/(?:en|ru)(?=\/|$)/, '') || '/'
 }
 
-type LayoutProps = {
-  children: ReactNode
-  navLinks: NavbarLink[]
+function isRouteActive(pathname: string, to: string) {
+  const normalizedPathname = normalizePathname(pathname)
+
+  return to === '/' ? normalizedPathname === '/' : normalizedPathname === to || normalizedPathname.startsWith(`${to}/`)
 }
 
-export function Layout({ children, navLinks }: LayoutProps) {
+function NavbarNavLink({
+  navLink,
+  label,
+  isCollapsed,
+  isActive,
+  onActiveElementChange,
+  onHover,
+  onHoverEnd,
+  onNavigate,
+}: NavbarNavLinkProps) {
+  const setElement = useCallback(
+    (element: HTMLAnchorElement | null) => {
+      if (isActive) onActiveElementChange(element)
+    },
+    [isActive, onActiveElementChange]
+  )
+  const Icon = navLink.icon
+  const icon = (
+    <span className={css.navLinkIcon}>
+      <Icon />
+    </span>
+  )
+  const navLinkProps = {
+    ref: setElement,
+    leftSection: isCollapsed ? (
+      <Tooltip label={label} position="right">
+        {icon}
+      </Tooltip>
+    ) : (
+      icon
+    ),
+    label,
+    active: isActive,
+    'aria-current': isActive ? ('page' as const) : undefined,
+    onMouseEnter: (event: { currentTarget: HTMLElement }) => onHover(event.currentTarget),
+    onMouseLeave: onHoverEnd,
+    classNames: {
+      root: css.navLink,
+      section: css.navLinkSection,
+      body: css.navLinkBody,
+      label: `${css.navLinkLabel} ${isCollapsed ? css.navLinkLabelCollapsed : ''}`,
+    },
+  }
+
+  return navLink.to ? (
+    <NavLink component={Link} to={navLink.to} onClick={onNavigate} {...navLinkProps} />
+  ) : (
+    <NavLink href="#" {...navLinkProps} onClick={(event) => event.preventDefault()} />
+  )
+}
+
+export function Layout({ navSections }: LayoutProps) {
   const { t } = useTranslation('presentation')
-  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
+  const { pathname } = useLocation()
+  const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] = useDisclosure()
   const [expandedWidth, setExpandedWidth] = useState(NAVBAR_MAX_WIDTH)
   const [currentWidth, setCurrentWidth] = useState(NAVBAR_MAX_WIDTH)
+  const [isNavbarAnimating, setIsNavbarAnimating] = useState(false)
+  const [hoveredNavLink, setHoveredNavLink] = useState<HTMLElement | null>(null)
+  const [activeNavLinkElement, setActiveNavLinkElement] = useState<HTMLAnchorElement | null>(null)
+  const [navLinksElement, setNavLinksElement] = useState<HTMLDivElement | null>(null)
   const navLinksRef = useRef<HTMLDivElement>(null)
+  const setNavLinksRef = useCallback((element: HTMLDivElement | null) => {
+    navLinksRef.current = element
+    setNavLinksElement(element)
+  }, [])
   const isCollapsed = currentWidth < NAVBAR_MIN_WIDTH + 1
+  const indicatorTarget = hoveredNavLink ?? activeNavLinkElement
   const resize = useAppShellResize({
     navbar: {
       min: NAVBAR_MIN_WIDTH,
@@ -48,7 +107,7 @@ export function Layout({ children, navLinks }: LayoutProps) {
   })
 
   useEffect(() => {
-    if (isCollapsed) {
+    if (isCollapsed || isNavbarAnimating) {
       return
     }
 
@@ -70,12 +129,13 @@ export function Layout({ children, navLinks }: LayoutProps) {
     }
 
     setExpandedWidth(currentWidth)
-  }, [currentWidth, isCollapsed, navLinks, resize.navbar])
+  }, [currentWidth, isCollapsed, isNavbarAnimating, navSections, resize.navbar])
 
   const toggleDesktop = () => {
     const nextOpened = isCollapsed
     const nextWidth = nextOpened ? expandedWidth : NAVBAR_MIN_WIDTH
 
+    setIsNavbarAnimating(true)
     setCurrentWidth(nextWidth)
     resize.navbar.setSize(nextWidth)
   }
@@ -83,8 +143,9 @@ export function Layout({ children, navLinks }: LayoutProps) {
   return (
     <AppShell
       className={css.layout}
-      header={{ height: 60 }}
-      transitionDuration={320}
+      data-navbar-animating={isNavbarAnimating || undefined}
+      header={{ height: { base: 48, sm: 60 } }}
+      transitionDuration={NAVBAR_TRANSITION_DURATION}
       transitionTimingFunction="cubic-bezier(0.22, 1, 0.36, 1)"
       navbar={{
         width: NAVBAR_MAX_WIDTH,
@@ -98,6 +159,7 @@ export function Layout({ children, navLinks }: LayoutProps) {
       <AppShell.Header>
         <Group className={css.headerGroup}>
           <Burger
+            className={css.burger}
             opened={mobileOpened}
             onClick={toggleMobile}
             hiddenFrom="sm"
@@ -105,6 +167,7 @@ export function Layout({ children, navLinks }: LayoutProps) {
             aria-label={t('layout.burgerLabel')}
           />
           <Burger
+            className={css.burger}
             opened={!isCollapsed}
             onClick={toggleDesktop}
             visibleFrom="sm"
@@ -115,46 +178,58 @@ export function Layout({ children, navLinks }: LayoutProps) {
         </Group>
       </AppShell.Header>
 
-      <AppShell.Navbar className={css.navbar}>
+      <AppShell.Navbar
+        className={css.navbar}
+        onTransitionEnd={(event) => {
+          if (event.currentTarget === event.target && event.propertyName === 'width') {
+            setIsNavbarAnimating(false)
+          }
+        }}
+      >
         <AppShell.Section className={css.navbarSection}>
           <span className={`${css.navbarText} ${isCollapsed ? css.navbarTextCollapsed : ''}`}>
             {t('layout.header')}
           </span>
         </AppShell.Section>
 
-        <AppShell.Section grow component={ScrollArea} className={css.navLinks}>
-          <div ref={navLinksRef}>
-            {navLinks.map((navLink) => {
-              const Icon = navLink.icon
-              const label = t(navLink.labelKey)
-              const icon = (
-                <span className={css.navLinkIcon}>
-                  <Icon />
-                </span>
-              )
-
+        <AppShell.Section grow component={ScrollArea} scrollbars="y" className={css.navBar}>
+          <div ref={setNavLinksRef} className={css.navLinksRef}>
+            <FloatingIndicator
+              className={css.navIndicator}
+              target={indicatorTarget}
+              parent={navLinksElement}
+              transitionDuration={260}
+              aria-hidden="true"
+            />
+            {navSections.map((navSection) => {
               return (
-                <NavLink
-                  href="#"
-                  key={navLink.labelKey}
-                  onClick={(event) => event.preventDefault()}
-                  leftSection={
-                    isCollapsed ? (
-                      <Tooltip label={label} position="right">
-                        {icon}
-                      </Tooltip>
-                    ) : (
-                      icon
+                <div className={css.navSection} key={navSection.title}>
+                  <Title
+                    size="lg"
+                    mb={5}
+                    className={`${css.navSectionTitle} ${isCollapsed ? css.navSectionTitleCollapsed : ''}`}
+                  >
+                    {t(navSection.title as never)}
+                  </Title>
+
+                  {navSection.navLinks.map((navLink) => {
+                    const label = t(navLink.labelKey as never)
+                    const isActive = navLink.to ? isRouteActive(pathname, navLink.to) : false
+                    return (
+                      <NavbarNavLink
+                        key={navLink.labelKey}
+                        navLink={navLink}
+                        label={label}
+                        isCollapsed={isCollapsed}
+                        isActive={isActive}
+                        onActiveElementChange={setActiveNavLinkElement}
+                        onHover={setHoveredNavLink}
+                        onHoverEnd={() => setHoveredNavLink(null)}
+                        onNavigate={closeMobile}
+                      />
                     )
-                  }
-                  label={isCollapsed ? null : label}
-                  classNames={{
-                    root: css.navLink,
-                    section: css.navLinkSection,
-                    body: css.navLinkBody,
-                    label: css.navLinkLabel,
-                  }}
-                />
+                  })}
+                </div>
               )
             })}
           </div>
@@ -166,7 +241,9 @@ export function Layout({ children, navLinks }: LayoutProps) {
           </span>
         </AppShell.Section>
       </AppShell.Navbar>
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <Outlet />
+      </AppShell.Main>
     </AppShell>
   )
 }
