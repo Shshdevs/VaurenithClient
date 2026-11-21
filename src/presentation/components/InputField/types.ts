@@ -23,7 +23,15 @@ export type NumberFieldValue = {
   onChange: (value: number | string) => void
 } & FieldValue
 
+export type TextareaValue = {
+  value: string
+  onChange: (value: string) => void
+  maxLength?: number
+  autosize?: boolean
+} & FieldValue
+
 export type DropdownFieldValue = {
+  value: string
   options: string[]
   onChange: (option: string) => void
 } & FieldValue
