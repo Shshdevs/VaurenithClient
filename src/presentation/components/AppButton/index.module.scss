@@ -2,4 +2,10 @@
   font-size: 1rem;
 
   --button-height: 56px;
+
+  transition: box-shadow 180ms ease;
+}
+
+.primary:hover:not(:disabled) {
+  box-shadow: 0 0 18px 4px rgb(139 209 127 / 22%);
 }

@@ -11,6 +11,7 @@ export const TextField = (props: TextFieldValue) => {
       description={props.description}
       placeholder={props.placeholder}
       required={props.required}
+      size="md"
       leftSection={LeadingIcon ? <LeadingIcon /> : null}
       rightSection={TrailingIcon ? <TrailingIcon onClick={props.onTrailingIconClick} /> : null}
       loading={props.isLoading}
@@ -60,6 +61,13 @@ export const NumberField = (props: NumberFieldValue) => {
       description={props.description}
       placeholder={props.placeholder}
       required={props.required}
+      size="md"
+      min={props.min}
+      max={props.max}
+      step={props.step}
+      allowDecimal={props.allowDecimal}
+      allowNegative={props.allowNegative}
+      clampBehavior={props.clampBehavior}
       leftSection={LeadingIcon ? <LeadingIcon /> : null}
       rightSection={TrailingIcon ? <TrailingIcon onClick={props.onTrailingIconClick} /> : null}
       loading={props.isLoading}
@@ -72,27 +80,23 @@ export const NumberField = (props: NumberFieldValue) => {
 
 export const DropdownField = (props: DropdownFieldValue) => {
   const LeadingIcon = props.leadingIcon
-  const TrailingIcon = props.trailingIcon
 
   return (
     <Select
-      value={props.value}
+      value={props.value ? props.value : null}
       label={props.label}
       description={props.description}
       placeholder={props.placeholder}
       required={props.required}
       leftSection={LeadingIcon ? <LeadingIcon /> : null}
-      rightSection={TrailingIcon ? <TrailingIcon onClick={props.onTrailingIconClick} /> : null}
       loading={props.isLoading}
       searchable={true}
       error={props.isError ? props.errorDescription : null}
       radius="md"
-      styles={{ input: { padding: '0.5rem 1.5rem' } }}
-      data={props.options}
       size="md"
-      clearable={!TrailingIcon}
-      onChange={(value) => {
-        if (value !== null) props.onChange(value)
+      data={props.options}
+      onChange={(_value, option) => {
+        if (option !== null) props.onChange(option.value)
       }}
     />
   )

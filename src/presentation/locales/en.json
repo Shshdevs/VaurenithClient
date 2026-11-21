@@ -28,7 +28,6 @@
     "noProjectsTitle": "No projects yet",
     "noProjectsDescription": "Create your first project to bring together repositories, devices, containers and services.",
     "createFirstProject": "Create first project",
-    "noDescription": "No description provided",
     "updatedAt": "Updated {{date}}",
     "types": {
       "software": "Software",
@@ -39,6 +38,43 @@
     "statuses": {
       "active": "Active",
       "archived": "Archived"
+    },
+    "forms": {
+      "nextStep": "Next Step",
+      "createProject": "Create project",
+      "createErrorTitle": "Could not create project",
+      "createError": "An unexpected error occurred while creating the project.",
+      "sessionExpired": "Your session has expired. Sign in again and retry.",
+      "generalInfo": {
+        "title": "General",
+        "description": "Provide your project info",
+        "projectName": "Project name",
+        "projectNamePlaceholder": "Enter your project name",
+        "projectNameBlank": "Project name cannot be blank",
+        "projectNameTooLong": "Project name is too long",
+
+        "projectDescription": "Description (Optional)",
+        "projectDescriptionPlaceholder": "Describe your project",
+
+        "projectType": "Project type",
+        "projectTypePlaceholder": "Define your project type",
+
+        "version": "Version",
+        "versionPlaceholder": "What is your project version?",
+        "projectVersionBlank": "Project version cannot be blank",
+        "projectVersionInvalid": "Enter a positive whole number for the project version"
+      },
+      "configuration": {
+        "title": "Configuration (Optional)",
+        "description": "Provide your project configuration",
+        "configurationTitle": "Configuration",
+        "configurationPlaceholder": "Provide you project JSON configuration",
+        "configurationAdd": "Add configuration (JSON)",
+        "invalidJSON": "Enter valid JSON configuration",
+        "objectRequired": "Configuration must be a JSON object",
+        "configurationUpload": "Upload JSON",
+        "configurationJSONFormat": "Format JSON"
+      }
     }
   },
   "registration": {

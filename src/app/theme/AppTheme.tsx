@@ -1,4 +1,4 @@
-import type { MantineThemeOverride } from '@mantine/core'
+import type { CSSVariablesResolver, MantineThemeOverride } from '@mantine/core'
 
 const appTheme: MantineThemeOverride = {
   colors: {
@@ -280,9 +280,33 @@ const appTheme: MantineThemeOverride = {
       defaultProps: {
         variant: 'default',
       },
-      styles: {},
+      styles: {
+        input: {
+          transition: 'box-shadow 180ms ease',
+          '&:focus:not([data-error])': {
+            boxShadow: '0 0 18px 4px rgb(139 209 127 / 22%)',
+          },
+        },
+      },
+    },
+    InputWrapper: {
+      styles: {
+        label: {
+          marginBottom: '0.5rem',
+        },
+      },
     },
   },
 }
+
+export const appCssVariablesResolver: CSSVariablesResolver = () => ({
+  variables: {},
+  dark: {
+    '--mantine-color-error': '#d83d50',
+  },
+  light: {
+    '--mantine-color-error': '#c92a2a',
+  },
+})
 
 export default appTheme

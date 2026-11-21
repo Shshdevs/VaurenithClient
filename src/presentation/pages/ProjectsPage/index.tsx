@@ -81,7 +81,7 @@ export function ProjectsPage() {
                     {project.slug}
                   </Text>
                 </div>
-                <Text lineClamp={3}>{project.description || t('projects.noDescription')}</Text>
+                <Text lineClamp={3}>{project.description}</Text>
                 <Group gap="xs">
                   <Badge>{t(`projects.types.${project.projectType}`)}</Badge>
                   <Badge color={project.status === 'active' ? 'green' : 'gray'}>

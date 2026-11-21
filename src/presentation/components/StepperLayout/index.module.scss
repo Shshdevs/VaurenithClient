@@ -1,0 +1,8 @@
+.stepIcon {
+  transition: box-shadow 180ms ease;
+}
+
+.stepIcon[data-progress],
+.stepIcon[data-completed] {
+  box-shadow: 0 0 18px 4px rgb(139 209 127 / 22%);
+}
