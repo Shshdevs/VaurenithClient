@@ -5,7 +5,7 @@ import css from './index.module.scss'
 import { AppButton } from '../AppButton'
 
 export const StepperLayout = ({ steps }: StepperProps) => {
-  const [active, setActive] = useState(1)
+  const [active, setActive] = useState(0)
   const nextStep = () => setActive((current) => (current < steps.length ? current + 1 : current))
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current))
 
